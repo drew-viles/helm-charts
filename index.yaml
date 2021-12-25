@@ -115,4 +115,20 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/istio-operator-0.1.0/istio-operator-0.1.0.tgz
     version: 0.1.0
+  provisioner:
+  - apiVersion: v1
+    appVersion: 2.4.0
+    created: "2021-12-25T23:47:42.061311259Z"
+    description: local provisioner chart
+    digest: e2a0355ff6e0239f8f4f47018cddb370b10e9f56bf62e724a82ffe3083557996
+    keywords:
+    - storage
+    - local
+    maintainers:
+    - email: drew@viles.uk
+      name: Drew
+    name: provisioner
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/provisioner-2.5.1/provisioner-2.5.1.tgz
+    version: 2.5.1
 generated: "2021-12-25T22:37:50.07579121Z"
