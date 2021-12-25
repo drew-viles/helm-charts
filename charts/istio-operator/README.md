@@ -1,6 +1,6 @@
 # istio-operator
 
-![Version: 1.11.4](https://img.shields.io/badge/Version-1.11.4-informational?style=flat-square) ![AppVersion: 1.11.4](https://img.shields.io/badge/AppVersion-1.11.4-informational?style=flat-square)
+![Version: 1.12.0](https://img.shields.io/badge/Version-1.12.0-informational?style=flat-square) ![AppVersion: 1.12.0](https://img.shields.io/badge/AppVersion-1.12.0-informational?style=flat-square)
 
 Helm chart for deploying Istio operator
 
@@ -45,7 +45,7 @@ The following table lists the configurable parameters of the chart and the defau
 | dashboards.enabled | bool | `true` | Can be set to false to disable dashboards configmaps |
 | enableCRDTemplates | bool | `false` |  |
 | image.repo | string | `"docker.io/istio"` | The repo to be used |
-| image.tag | string | `"1.11.4"` | The tag to be used |
+| image.tag | string | `"1.12.0"` | The tag to be used |
 | operator.affinity | object | `{}` | K8S Resources |
 | operator.imagePullPolicy | string | `"IfNotPresent"` | The name of the operator deployment |
 | operator.imagePullSecrets | object | `{}` | K8S Resources |
