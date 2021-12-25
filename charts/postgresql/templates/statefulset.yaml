@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: {{ .Release.Namespace }}
   name: {{.Values.nameOverride}}
+  namespace: {{ .Release.Namespace }}
   labels:
   {{- include "postgresql.labels" . | nindent 4 }}
   annotations:
