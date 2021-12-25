@@ -115,6 +115,24 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/istio-operator-0.1.0/istio-operator-0.1.0.tgz
     version: 0.1.0
+  postgresql:
+  - apiVersion: v1
+    appVersion: 9.6.0
+    created: "2021-12-25T23:55:20.739573833Z"
+    description: Helm chart for deploying postgresql
+    digest: 92a5ae8bc674e032d6915dfb45c516f0ce186582ac8f51b2f4a84c87d67bfa07
+    keywords:
+    - postgresql
+    - database
+    maintainers:
+    - email: drew@viles.uk
+      name: Drew
+    name: postgresql
+    sources:
+    - https://github.com/drew-viles/helm-charts/postgresql
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/postgresql-9.6.0/postgresql-9.6.0.tgz
+    version: 9.6.0
   provisioner:
   - apiVersion: v1
     appVersion: 2.4.0
