@@ -6,7 +6,7 @@ image:
   # -- The repo to be used
   repo: docker.io/istio
   # -- The tag to be used
-  tag: 1.10.5
+  tag: 1.7.4
 operator:
   # -- The name of the operator deployment
   name: istio-operator
