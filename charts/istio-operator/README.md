@@ -1,6 +1,6 @@
 # istio-operator
 
-![Version: 1.10.5](https://img.shields.io/badge/Version-1.10.5-informational?style=flat-square) ![AppVersion: 1.10.5](https://img.shields.io/badge/AppVersion-1.10.5-informational?style=flat-square)
+![Version: 1.11.4](https://img.shields.io/badge/Version-1.11.4-informational?style=flat-square) ![AppVersion: 1.11.4](https://img.shields.io/badge/AppVersion-1.11.4-informational?style=flat-square)
 
 Helm chart for deploying Istio operator
 
@@ -9,7 +9,7 @@ Helm chart for deploying Istio operator
 ### Add Helm repository
 
 ```shell
-helm repo add drew-viles https://drew-viles.github.io/helm-charts
+helm repo add cloudops https://github.com/LexisNexis-RBA/cloudops-helm-charts
 helm repo update
 ```
 
@@ -18,7 +18,7 @@ helm repo update
 Using config from a file:
 
 ```bash
-helm upgrade --install istio-operator . --values ./values.yaml
+helm upgrade --install istio . --values ./values.yaml
 ```
 
 ## Updating the Chart
@@ -43,8 +43,9 @@ The following table lists the configurable parameters of the chart and the defau
 | controlPlane.enabled | bool | `true` | Enable the control plane |
 | controlPlane.meshConfig | object | `{}` | Setup the mesh config - https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/ - see values for example |
 | dashboards.enabled | bool | `true` | Can be set to false to disable dashboards configmaps |
+| enableCRDTemplates | bool | `false` |  |
 | image.repo | string | `"docker.io/istio"` | The repo to be used |
-| image.tag | string | `"1.10.5"` | The tag to be used |
+| image.tag | string | `"1.11.4"` | The tag to be used |
 | operator.affinity | object | `{}` | K8S Resources |
 | operator.imagePullPolicy | string | `"IfNotPresent"` | The name of the operator deployment |
 | operator.imagePullSecrets | object | `{}` | K8S Resources |
