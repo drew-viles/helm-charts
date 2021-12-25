@@ -13,6 +13,6 @@ keywords:
   - istio
   - operator
 sources:
-  - https://github.com/LexisNexis-RBA/cloudops-helm-charts/istio-operator
+  - https://github.com/drew-viles/istio-operator
 engine: gotpl
 icon: https://istio.io/favicons/android-192x192.png
