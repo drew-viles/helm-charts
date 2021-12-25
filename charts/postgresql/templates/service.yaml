@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: {{.Values.nameOverride}}
+  {{- include "postgresql.labels" . | nindent 4 }}
+  annotations:
+  {{- include "postgresql.annotations" . | nindent 4 }}
+  name: {{.Values.nameOverride}}
+spec:
+  {{- if .Values.postgres.service.loadBalancerIP}}
+loadBalancerIP: {{.Values.postgres.service.loadBalancerIP}}
+  {{- end}}
+type: {{.Values.postgres.service.type}}
+ports:
+  - name: sql
+    port: 5432
+    targetPort: 5432
+selector:
+  name: {{.Values.nameOverride}}
+---
