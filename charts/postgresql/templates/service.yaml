@@ -9,14 +9,14 @@ metadata:
   annotations:
   {{- include "postgresql.annotations" . | nindent 4 }}
 spec:
-  {{- if .Values.postgres.service.loadBalancerIP}}
-loadBalancerIP: {{.Values.postgres.service.loadBalancerIP}}
-  {{- end}}
-type: {{.Values.postgres.service.type}}
-ports:
-  - name: sql
-    port: 5432
-    targetPort: 5432
-selector:
-  name: {{.Values.nameOverride}}
+{{- if .Values.postgres.service.loadBalancerIP}}
+  loadBalancerIP: {{.Values.postgres.service.loadBalancerIP}}
+{{- end}}
+  type: {{.Values.postgres.service.type}}
+  ports:
+    - name: sql
+      port: 5432
+      targetPort: 5432
+  selector:
+    name: {{.Values.nameOverride}}
 ---
