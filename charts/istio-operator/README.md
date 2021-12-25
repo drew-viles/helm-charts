@@ -9,7 +9,7 @@ Helm chart for deploying Istio operator
 ### Add Helm repository
 
 ```shell
-helm repo add cloudops https://github.com/LexisNexis-RBA/cloudops-helm-charts
+helm repo add drew-viles https://drew-viles.github.io/helm-charts
 helm repo update
 ```
 
