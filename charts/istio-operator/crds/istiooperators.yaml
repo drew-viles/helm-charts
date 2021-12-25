@@ -3,14 +3,9 @@ kind: CustomResourceDefinition
 metadata:
  name: istiooperators.install.istio.io
  labels:
-   app.kubernetes.io/name: istio-operator
-#    app.kubernetes.io/instance:
-   helm.sh/chart: istio-operator
-   app.kubernetes.io/version: 1.10.0
-   app.kubernetes.io/managed-by: Helm
+   { { - include "istio-operator.labels" . | nindent 4 } }
  annotations:
-   meta.helm.sh/release-name: "istio-operator"
-   meta.helm.sh/release-namespace: "istio-operator"
+   { { - include "istio-operator.annotations" . | nindent 4 } }
 spec:
  group: install.istio.io
  names:
