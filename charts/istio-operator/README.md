@@ -18,7 +18,7 @@ helm repo update
 Using config from a file:
 
 ```bash
-helm upgrade --install istio . --values ./values.yaml
+helm upgrade --install istio-operator . --values ./values.yaml
 ```
 
 ## Updating the Chart
