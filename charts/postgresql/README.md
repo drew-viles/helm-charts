@@ -2,7 +2,7 @@
 
 
 
-![Version: 10.19.0](https://img.shields.io/badge/Version-10.19.0-informational?style=flat-square) ![AppVersion: 10.19.0](https://img.shields.io/badge/AppVersion-10.19.0-informational?style=flat-square) 
+![Version: 11.14.0](https://img.shields.io/badge/Version-11.14.0-informational?style=flat-square) ![AppVersion: 11.14.0](https://img.shields.io/badge/AppVersion-11.14.0-informational?style=flat-square) 
 
 Helm chart for deploying postgresql
 
@@ -42,7 +42,7 @@ The following table lists the configurable parameters of the chart and the defau
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.repo | string | `"postgres"` | The repo to be used |
-| image.tag | string | `"10.19-bullseye"` | The tag to be used |
+| image.tag | string | `"11.14-bullseye"` | The tag to be used |
 | nameOverride | string | `"postgresql"` |  |
 | namespace.name | string | `"database"` |  |
 | postgres.env | object | `{}` |  |
