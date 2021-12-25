@@ -5,8 +5,7 @@ image:
   # -- The repo to be used
   repo: docker.io/istio
   # -- The tag to be used
-  tag: 1.11.4
-
+  tag: 1.12.0
 enableCRDTemplates: false
 operator:
   # -- The name of the operator deployment
