@@ -117,6 +117,23 @@ entries:
     version: 0.1.0
   postgresql:
   - apiVersion: v1
+    appVersion: 12.9.0
+    created: "2021-12-26T00:01:59.074698373Z"
+    description: Helm chart for deploying postgresql
+    digest: 169a2197fc82fa37e32e35861cd393dab15beedb94a46e027e5eced3b73fdd81
+    keywords:
+    - postgresql
+    - database
+    maintainers:
+    - email: drew@viles.uk
+      name: Drew
+    name: postgresql
+    sources:
+    - https://github.com/drew-viles/helm-charts/postgresql
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/postgresql-12.9.0/postgresql-12.9.0.tgz
+    version: 12.9.0
+  - apiVersion: v1
     appVersion: 11.14.0
     created: "2021-12-25T23:59:54.944174514Z"
     description: Helm chart for deploying postgresql
