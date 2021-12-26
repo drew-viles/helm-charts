@@ -1,4 +1,5 @@
 ---
+
 image:
   repo: docker.io/istio
   tag: 1.12.0
@@ -44,16 +45,16 @@ controlPlane:
       - name: istio-egressgateway
         enabled: true
         namespace: istio-system
-             k8s:
-               serviceAnnotations:
-                 external-dns.alpha.kubernetes.io/hostname: some.domain.com
+        k8s:
+          serviceAnnotations:
+            external-dns.alpha.kubernetes.io/hostname: some.domain.com
     ingressGateways:
       - name: istio-ingressgateway
         enabled: true
         namespace: istio-system
-         k8s:
-           serviceAnnotations:
-             external-dns.alpha.kubernetes.io/hostname: some.domain.com
+        k8s:
+          serviceAnnotations:
+            external-dns.alpha.kubernetes.io/hostname: some.domain.com
 
 serviceMonitors:
   enabled: true
