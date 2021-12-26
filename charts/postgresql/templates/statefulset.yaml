@@ -84,6 +84,12 @@ spec:
           tolerations:
           {{- toYaml . | nindent 8 }}
           {{- end }}
+      {{- if (eq false .Values.postgres.peristentData.enabled)}}
+      volumes:
+        - name: data
+          emptyDir: {}
+      {{- end }}
+{{- if (eq true .Values.postgres.peristentData.enabled)}}
   volumeClaimTemplates:
     - metadata:
         name: data
@@ -93,4 +99,5 @@ spec:
         resources:
           requests:
             storage: {{.Values.postgres.storage.size}}
+{{- end }}
 ---

@@ -29,6 +29,8 @@ statefulset:
   tolerations: {}
 
 postgres:
+  peristentData:
+    enabled: false
   storage:
     className: fast-disks
     size: 1Gi

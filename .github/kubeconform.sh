@@ -13,5 +13,5 @@ tar -xf /tmp/kubeconform.tar.gz kubeconform
 
 # validate charts
 for CHART_DIR in ${CHART_DIRS}; do
-  helm template --values charts/"${CHART_DIR}"/values.yaml charts/"${CHART_DIR}" | ./kubeconform --strict --ignore-missing-schemas --kubernetes-version "${KUBERNETES_VERSION#v}"
+  helm template --values charts/"${CHART_DIR}"/ci/test-values.yaml charts/"${CHART_DIR}" | ./kubeconform --strict --ignore-missing-schemas --kubernetes-version "${KUBERNETES_VERSION#v}"
 done
