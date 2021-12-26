@@ -1,26 +1,24 @@
 # drone-runner-kube
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 The Drone Kubernetes runner launches builds in Kubernetes Jobs
 
-**Homepage:** <https://kube-runner.docs.drone.io/>
+**Homepage:** <https://github.com/drew-viles/charts/drone-runner-kube>
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| Drone | hello@drone.io |  |
 | Drew | drew@viles.uk |  |
 
 ## Source Code
 
-* <https://github.com/drone-runners/drone-runner-kube>
-* <https://github.com/drone/helm>
+* <https://drew-viles.github.io/helm-charts>
 
 ## Requirements
 
-Kubernetes: `^1.13.0-0`
+Kubernetes: `^1.20.0-0`
 
 ## Values
 
@@ -36,7 +34,7 @@ Kubernetes: `^1.13.0-0`
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"drone/drone-runner-kube"` |  |
-| image.tag | string | `"1.0.0-beta.6"` |  |
+| image.tag | string | `"1.0.0-rc.2"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `"nginx"` |  |

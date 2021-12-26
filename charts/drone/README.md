@@ -1,17 +1,17 @@
 # drone
 
-![Version: 0.1.7](https://img.shields.io/badge/Version-0.1.7-informational?style=flat-square) ![AppVersion: 1.9.0](https://img.shields.io/badge/AppVersion-1.9.0-informational?style=flat-square)
+![Version: 2.7.2](https://img.shields.io/badge/Version-2.7.2-informational?style=flat-square) ![AppVersion: 2.7.2](https://img.shields.io/badge/AppVersion-2.7.2-informational?style=flat-square)
 
 Drone is a self-service Continuous Delivery platform for busy development teams
 
-**Homepage:** <https://drone.io/>
+**Homepage:** <https://github.com/drew-viles/charts/drone>
 
 ## Installation
 
 ### Add Helm repository
 
 ```shell
-helm repo add drew-viles https://github.com/drew-viles/helm-charts
+helm repo add drew-viles https://drew-viles.github.io/helm-charts
 helm repo update
 ```
 
@@ -20,13 +20,13 @@ helm repo update
 Using config from a file:
 
 ```bash
-helm upgrade --install istio . --values ./values.yaml
+helm upgrade --install drone . --values ./values.yaml
 ```
 
 ## Updating the Chart
 Make sure you've run and resolved any issues using the following as failures of these will cause the pipeline/actions to fail.
 ```
-yamllint charts/istio-operator/values.yaml  --config-file .github/ct.yaml
+yamllint charts/drone/values.yaml  --config-file .github/ct.yaml
 
 helm-docs .
 ```
@@ -50,7 +50,7 @@ The following table lists the configurable parameters of the chart and the defau
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"drone/drone"` |  |
-| image.tag | string | `"1.9.0"` |  |
+| image.tag | string | `"2.7.2"` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `"nginx"` |  |
