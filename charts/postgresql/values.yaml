@@ -5,7 +5,7 @@ image:
   # -- The repo to be used
   repo: postgres
   # -- The tag to be used
-  tag: 13.5-bullseye
+  tag: 14.1-bullseye
 
 nameOverride: postgresql
 namespace:
