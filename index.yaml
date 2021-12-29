@@ -1,6 +1,77 @@
 apiVersion: v1
 entries:
+  drone:
+  - apiVersion: v1
+    appVersion: 2.7.2
+    created: "2021-12-29T18:18:03.949126069Z"
+    description: Drone is a self-service Continuous Delivery platform for busy development teams
+    digest: 819401b7f8a014fb8b5fb88ae4994ccb0f7a3396848b05e9dfa79576d88a10b0
+    home: https://github.com/drew-viles/charts/drone
+    icon: https://drone.io/apple-touch-icon.png
+    keywords:
+    - continuous-delivery
+    - continuous-deployment
+    - continuous-integration
+    - docker
+    - drone
+    - drone.io
+    - go
+    kubeVersion: ^1.20.0-0
+    maintainers:
+    - email: drew@viles.uk
+      name: Drew
+    name: drone
+    sources:
+    - https://drew-viles.github.io/helm-charts
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/drone-2.7.2/drone-2.7.2.tgz
+    version: 2.7.2
+  drone-runner-kube:
+  - apiVersion: v1
+    appVersion: 1.0.0
+    created: "2021-12-29T18:18:04.117644675Z"
+    description: The Drone Kubernetes runner launches builds in Kubernetes Jobs
+    digest: e83677dd3308c0eb54610fdb1e34a76e9a4e36b879b3275c57f4b0d1fd14e762
+    home: https://github.com/drew-viles/charts/drone-runner-kube
+    icon: https://drone.io/apple-touch-icon.png
+    keywords:
+    - continuous-delivery
+    - continuous-deployment
+    - continuous-integration
+    - docker
+    - drone
+    - drone.io
+    - go
+    kubeVersion: ^1.20.0-0
+    maintainers:
+    - email: drew@viles.uk
+      name: Drew
+    name: drone-runner-kube
+    sources:
+    - https://drew-viles.github.io/helm-charts
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/drone-runner-kube-0.1.0/drone-runner-kube-0.1.0.tgz
+    version: 0.1.0
   istio-operator:
+  - apiVersion: v1
+    appVersion: 1.12.0
+    created: "2021-12-29T18:18:04.313010162Z"
+    description: Helm chart for deploying Istio operator
+    digest: 115f223b3416685f11b735661290066da4511b169f052a546c1f0b65c1c212f1
+    icon: https://istio.io/favicons/android-192x192.png
+    keywords:
+    - istio
+    - operator
+    maintainers:
+    - email: drew@viles.uk
+      name: Drew
+    - name: Owen
+    name: istio-operator
+    sources:
+    - https://drew-viles.github.io/helm-charts/istio-operator
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/istio-operator-1.12.1/istio-operator-1.12.1.tgz
+    version: 1.12.1
   - apiVersion: v1
     appVersion: 1.12.0
     created: "2021-12-25T23:37:18.117642092Z"
@@ -118,6 +189,23 @@ entries:
   postgresql:
   - apiVersion: v1
     appVersion: 14.1.0
+    created: "2021-12-29T18:18:04.497292827Z"
+    description: Helm chart for deploying postgresql
+    digest: ec93996f3ab6d98a6e7375693640c15916b9bbb8e0c64cfa78a48f415c45f82f
+    keywords:
+    - postgresql
+    - database
+    maintainers:
+    - email: drew@viles.uk
+      name: Drew
+    name: postgresql
+    sources:
+    - https://drew-viles.github.io/helm-charts//postgresql
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/postgresql-14.1.1/postgresql-14.1.1.tgz
+    version: 14.1.1
+  - apiVersion: v1
+    appVersion: 14.1.0
     created: "2021-12-26T00:04:55.044656706Z"
     description: Helm chart for deploying postgresql
     digest: 95bd95a0b4a797bec3ca4bd48ba7ebfa8badcd2e758916008f6f5fd7ba725ab7
@@ -219,6 +307,23 @@ entries:
     - https://github.com/drew-viles/helm-charts/releases/download/postgresql-9.6.0/postgresql-9.6.0.tgz
     version: 9.6.0
   provisioner:
+  - apiVersion: v1
+    appVersion: 2.4.0
+    created: "2021-12-29T18:18:04.64373119Z"
+    description: local provisioner chart
+    digest: c347bce32723c18e8d41e961f1c732f7177ad2e649c1ee4caa9208d554c4d1f1
+    keywords:
+    - storage
+    - local
+    maintainers:
+    - email: drew@viles.uk
+      name: Drew
+    name: provisioner
+    sources:
+    - https://drew-viles.github.io/helm-charts/local-storage-provisioner
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/provisioner-2.5.2/provisioner-2.5.2.tgz
+    version: 2.5.2
   - apiVersion: v1
     appVersion: 2.4.0
     created: "2021-12-25T23:47:42.061311259Z"
