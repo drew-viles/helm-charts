@@ -2,7 +2,7 @@
 
 
 
-![Version: 14.1.0](https://img.shields.io/badge/Version-14.1.0-informational?style=flat-square) ![AppVersion: 14.1.0](https://img.shields.io/badge/AppVersion-14.1.0-informational?style=flat-square) 
+![Version: 14.1.1](https://img.shields.io/badge/Version-14.1.1-informational?style=flat-square) ![AppVersion: 14.1.0](https://img.shields.io/badge/AppVersion-14.1.0-informational?style=flat-square) 
 
 Helm chart for deploying postgresql
 
@@ -46,6 +46,7 @@ The following table lists the configurable parameters of the chart and the defau
 | nameOverride | string | `"postgresql"` |  |
 | namespace.name | string | `"database"` |  |
 | postgres.env | object | `{}` |  |
+| postgres.peristentData.enabled | bool | `false` |  |
 | postgres.service.loadBalancerIP | string | `nil` |  |
 | postgres.service.type | string | `"LoadBalancer"` |  |
 | postgres.storage.className | string | `"fast-disks"` |  |

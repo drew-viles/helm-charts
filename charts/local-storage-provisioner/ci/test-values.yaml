@@ -1,0 +1,41 @@
+---
+
+common:
+  rbac:
+    create: true
+    pspEnabled: false
+  serviceAccount:
+    create: true
+    name: ""
+  useAlphaAPI: false
+  setPVOwnerRef: false
+  useJobForCleaning: false
+  useNodeNameOnly: false
+  mountDevVolume: true
+  additionalHostPathVolumes: {}
+classes:
+  - name: fast-disks
+    hostDir: /mnt/fast-disks
+    volumeMode: Filesystem
+    fsType: ext4
+    namePattern: "*"
+    blockCleanerCommand:
+daemonset:
+  podAnnotations: {}
+  podLabels: {}
+  image: k8s.gcr.io/sig-storage/local-volume-provisioner:v2.4.0
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+  privileged: true
+  initContainers: []
+
+serviceMonitor:
+  enabled: false
+  interval: 10s
+  namespace:
+  additionalLabels: {}
+  relabelings: []
+nameOverride: ""
+fullnameOverride: ""

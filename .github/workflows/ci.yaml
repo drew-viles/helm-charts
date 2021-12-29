@@ -49,7 +49,7 @@ jobs:
   kubeconform-chart:
     runs-on: ubuntu-latest
     needs:
-      #      - lint-chart
+      # - lint-chart
       - lint-docs
     strategy:
       matrix:

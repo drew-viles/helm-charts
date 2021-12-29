@@ -13,19 +13,12 @@ namespace:
 serviceAccountName: postgresql
 
 statefulset:
-  # -- Replicas
   replicas: 1
-  # -- K8S Resources
   resources: {}
-  # -- Image Pull secrets
   imagePullSecrets: {}
-  # -- Pod Security Context
   podSecurityContext: {}
-  # -- Node Selector
   nodeSelector: {}
-  # -- Pod Affinity/AnitAffinity
   affinity: {}
-  # -- Tolerations
   tolerations: {}
 
 postgres:
@@ -37,11 +30,11 @@ postgres:
   service:
     type: LoadBalancer
     loadBalancerIP:
-  env: {}
-  # postgresPassword: ""
-  # postgresUser: ""
-  # postgresDB: ""
-  # postgresInitDBArgs: ""
-  # postgresInitDBWalDir: ""
-  # hostAuthMethod: ""
-  # pgData: ""
+  env:
+    postgresPassword: "SOME_PASSWORD"
+    postgresUser: "SOME_USER"
+    postgresDB: "SOME_USER_DB"
+#    postgresInitDBArgs: ""
+#    postgresInitDBWalDir: ""
+#    hostAuthMethod: ""
+#    pgData: ""
