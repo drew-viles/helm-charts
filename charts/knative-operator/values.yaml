@@ -1,6 +1,5 @@
 ---
-# Default values for istio-operator.
-
+# Default values for knative-operator.
 image:
   # -- The repo to be used
   repo: gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256
@@ -32,10 +31,10 @@ eventing:
   use_prometheus: false
   use_rabbitmq: false
   use_redis: false
-  # -- How many replicas of the operator
 #  prometheusNamespace:
 #    # -- The namespace that prometheus is in
 #    name: monitoring
+# -- How many replicas of the operator
 #  replicas: 1
 #  # -- K8S Resources
 #  resources: {}
@@ -49,46 +48,6 @@ eventing:
 #  affinity: {}
 #  # -- K8S Resources
 #  tolerations: {}
-#
-## -- Control plane config - see https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#IstioOperatorSpec
-#controlPlane:
-#  # -- Enable the control plane
-#  enabled: true
-#  # -- Addon components https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#ExternalComponentSpec  - see values for example
-#  addonComponents: {}
-##    grafana:
-##      enabled: false
-#
-#   # -- Setup the mesh config - https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/ - see values for example
-#  meshConfig: {}
-##    accessLogFile: /dev/stdout
-##    enableAutoMtls: true
-##    outboundTrafficPolicy:
-##      mode: REGISTRY_ONLY # TODO: You can enable this once infra is in place to manage it.
-##      mode: ALLOW_ANY
-##    rootNamespace: istio-system
-##    enablePrometheusMerge: true
-##    enableTracing: true
-##    defaultConfig:
-##      zipkin:
-##        address: PATH_TO_JAEGER
-#
-#  # -- Setup the mesh config - https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#IstioComponentSetSpec - see values for example
-#  components: {}
-##    egressGateways:
-##      - name: istio-egressgateway
-##        enabled: true
-##        namespace: istio-system
-##             k8s:
-##               serviceAnnotations:
-##                 external-dns.alpha.kubernetes.io/hostname: some.domain.com
-##    ingressGateways:
-##      - name: istio-ingressgateway
-##        enabled: true
-##        namespace: istio-system
-##         k8s:
-##           serviceAnnotations:
-##             external-dns.alpha.kubernetes.io/hostname: some.domain.com
 #serviceMonitors:
 #  # -- Can be set to false to disable servicemonitor configmaps
 #  enabled: true

@@ -1,63 +1,32 @@
 ---
-
 image:
+  # -- The repo to be used
   repo: gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256
+  # -- The tag to be used
   tag: c604ba6048db9ccab664894134d39468992e11b9ec858be9cc621a90bae9a378
-enableCRDTemplates: false
+
 operator:
-  name: istio-operator
+  # -- The name of the operator deployment
+  name: knative-operator
+  # -- The name of the operator deployment
   imagePullPolicy: IfNotPresent
   operatorNamespace:
-    name: istio-operator
-  prometheusNamespace:
-    name: monitoring
-  istioNamespace:
-    name: istio-system
+    # -- The namespace that the operator will be deployed in
+    name: knative-operator
     create: true
-  replicas: 1
-  resources: {}
-  imagePullSecrets: {}
-  podSecurityContext: {}
-  nodeSelector: {}
-  affinity: {}
-  tolerations: {}
-
-controlPlane:
-  enabled: true
-  addonComponents:
-    grafana:
-      enabled: false
-
-  meshConfig:
-    accessLogFile: /dev/stdout
-    enableAutoMtls: true
-    outboundTrafficPolicy:
-      mode: ALLOW_ANY
-    rootNamespace: istio-system
-    enablePrometheusMerge: true
-    enableTracing: true
-#    defaultConfig:
-#      zipkin:
-#        address: PATH_TO_JAEGER
-
-  components:
-    egressGateways:
-      - name: istio-egressgateway
-        enabled: true
-        namespace: istio-system
-        k8s:
-          serviceAnnotations:
-            external-dns.alpha.kubernetes.io/hostname: some.domain.com
-    ingressGateways:
-      - name: istio-ingressgateway
-        enabled: true
-        namespace: istio-system
-        k8s:
-          serviceAnnotations:
-            external-dns.alpha.kubernetes.io/hostname: some.domain.com
-
-serviceMonitors:
-  enabled: true
-
-dashboards:
-  enabled: true
+  istioNamespace:
+    # -- The namespace that istio is installed to
+    name: istio-system
+serving:
+  use_contour: false
+  use_istio: false
+eventing:
+  use_ceph: false
+  use_couchdb: false
+  use_github: false
+  use_gitlab: false
+  use_kafka: false
+  use_natss: false
+  use_prometheus: false
+  use_rabbitmq: false
+  use_redis: false
