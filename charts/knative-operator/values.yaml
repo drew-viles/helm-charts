@@ -31,28 +31,28 @@ eventing:
   use_prometheus: false
   use_rabbitmq: false
   use_redis: false
-#  prometheusNamespace:
-#    # -- The namespace that prometheus is in
-#    name: monitoring
-# -- How many replicas of the operator
-#  replicas: 1
-#  # -- K8S Resources
-#  resources: {}
-#  # -- K8S Resources
-#  imagePullSecrets: {}
-#  # -- K8S Resources
-#  podSecurityContext: {}
-#  # -- K8S Resources
-#  nodeSelector: {}
-#  # -- K8S Resources
-#  affinity: {}
-#  # -- K8S Resources
-#  tolerations: {}
-#serviceMonitors:
-#  # -- Can be set to false to disable servicemonitor configmaps
-#  enabled: true
-##  labels: {}
+#   prometheusNamespace:
+#     # -- The namespace that prometheus is in
+#     name: monitoring
+#  -- How many replicas of the operator
+#   replicas: 1
+#   # -- K8S Resources
+#   resources: {}
+#   # -- K8S Resources
+#   imagePullSecrets: {}
+#   # -- K8S Resources
+#   podSecurityContext: {}
+#   # -- K8S Resources
+#   nodeSelector: {}
+#   # -- K8S Resources
+#   affinity: {}
+#   # -- K8S Resources
+#   tolerations: {}
+# serviceMonitors:
+#   # -- Can be set to false to disable servicemonitor configmaps
+#   enabled: true
+#   labels: {}
 #
-#dashboards:
-#  # -- Can be set to false to disable dashboards configmaps
-#  enabled: true
+# dashboards:
+#   # -- Can be set to false to disable dashboards configmaps
+#   enabled: true
