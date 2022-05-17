@@ -18,13 +18,19 @@ operator:
   istioNamespace:
     # -- The namespace that istio is installed to
     name: istio-system
+  webhook:
+    # -- K8S Resources
+    resources: {}
+  knative:
+    # -- K8S Resources
+    resources: {}
 serving:
   use_contour: false
   use_istio: false
 eventing:
   use_ceph: false
   use_couchdb: false
-  use_github: false
+  use_github: true
   use_gitlab: false
   use_kafka: false
   use_natss: false
@@ -36,17 +42,13 @@ eventing:
 #     name: monitoring
 #  -- How many replicas of the operator
 #   replicas: 1
-#   # -- K8S Resources
-#   resources: {}
-#   # -- K8S Resources
+#   # -- K8S Pull Secrets
 #   imagePullSecrets: {}
-#   # -- K8S Resources
-#   podSecurityContext: {}
-#   # -- K8S Resources
+#   # -- K8S Node Selector
 #   nodeSelector: {}
-#   # -- K8S Resources
+#   # -- K8S affinity
 #   affinity: {}
-#   # -- K8S Resources
+#   # -- K8S tolerations
 #   tolerations: {}
 # serviceMonitors:
 #   # -- Can be set to false to disable servicemonitor configmaps

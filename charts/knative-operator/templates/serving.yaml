@@ -29,7 +29,7 @@ spec:
     {{- else }}
     network:
       #ONLY ENABLE IN DEFAULT SCENARIO
-      {{ if .Values.serving.use_istio }}
+    {{- if or (ne .Values.serving.use_contour true) (ne .Values.serving.use_istio true)  }}
       ingress-class: "kourier.ingress.networking.knative.dev"
       {{ else if .Values.serving.use_contour }}
       #ONLY ENABLE IF USE_CONTOUR == TRUE

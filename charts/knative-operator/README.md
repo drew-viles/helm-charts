@@ -39,7 +39,7 @@ The following table lists the configurable parameters of the chart and the defau
 |-----|------|---------|-------------|
 | eventing.use_ceph | bool | `false` |  |
 | eventing.use_couchdb | bool | `false` |  |
-| eventing.use_github | bool | `false` |  |
+| eventing.use_github | bool | `true` |  |
 | eventing.use_gitlab | bool | `false` |  |
 | eventing.use_kafka | bool | `false` |  |
 | eventing.use_natss | bool | `false` |  |
@@ -50,8 +50,10 @@ The following table lists the configurable parameters of the chart and the defau
 | image.tag | string | `"c604ba6048db9ccab664894134d39468992e11b9ec858be9cc621a90bae9a378"` | The tag to be used |
 | operator.imagePullPolicy | string | `"IfNotPresent"` | The name of the operator deployment |
 | operator.istioNamespace.name | string | `"istio-system"` | The namespace that istio is installed to |
+| operator.knative.resources | object | `{}` | K8S Resources |
 | operator.name | string | `"knative-operator"` | The name of the operator deployment |
 | operator.operatorNamespace.create | bool | `true` |  |
 | operator.operatorNamespace.name | string | `"knative-operator"` | The namespace that the operator will be deployed in |
+| operator.webhook.resources | object | `{}` | K8S Resources |
 | serving.use_contour | bool | `false` |  |
 | serving.use_istio | bool | `false` |  |

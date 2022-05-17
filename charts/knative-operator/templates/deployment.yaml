@@ -45,12 +45,7 @@ spec:
           # and substituted here.
           image: gcr.io/knative-releases/knative.dev/operator/cmd/webhook@sha256:91a7017364117f070354932ddcb46c65e0ed45b1056c8085079768257f5f1d8b
           resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
-            limits:
-              cpu: 500m
-              memory: 500Mi
+          {{- toYaml .Values.operator.webhook.resources | nindent 12 }}
           env:
             - name: POD_NAME
               valueFrom:
@@ -153,6 +148,8 @@ spec:
               value: config-logging
             - name: CONFIG_OBSERVABILITY_NAME
               value: config-observability
+          resources:
+          {{- toYaml .Values.operator.knative.resources | nindent 12 }}
           ports:
             - name: metrics
               containerPort: 9090
