@@ -1,8 +1,8 @@
-# istio-operator
+# knative
 
-![Version: 1.12.1](https://img.shields.io/badge/Version-1.12.1-informational?style=flat-square) ![AppVersion: 1.12.0](https://img.shields.io/badge/AppVersion-1.12.0-informational?style=flat-square)
+![Version: 1.4.1](https://img.shields.io/badge/Version-1.4.1-informational?style=flat-square) ![AppVersion: 1.4.1](https://img.shields.io/badge/AppVersion-1.4.1-informational?style=flat-square)
 
-Helm chart for deploying Istio operator
+Helm chart for deploying Knative operator
 
 ## Installation
 
@@ -18,13 +18,13 @@ helm repo update
 Using config from a file:
 
 ```bash
-helm upgrade --install istio-operator . --values ./values.yaml
+helm upgrade --install knative . --values ./values.yaml
 ```
 
 ## Updating the Chart
 Make sure you've run and resolved any issues using the following as failures of these will cause the pipeline/actions to fail.
 ```
-yamllint charts/istio-operator/values.yaml  --config-file .github/ct.yaml
+yamllint charts/knative/values.yaml  --config-file .github/ct.yaml
 
 helm-docs .
 ```
@@ -37,26 +37,21 @@ The following table lists the configurable parameters of the chart and the defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| controlPlane | object | `{"addonComponents":{},"components":{},"enabled":true,"meshConfig":{}}` | Control plane config - see https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#IstioOperatorSpec |
-| controlPlane.addonComponents | object | `{}` | Addon components https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#ExternalComponentSpec  - see values for example |
-| controlPlane.components | object | `{}` | Setup the mesh config - https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#IstioComponentSetSpec - see values for example |
-| controlPlane.enabled | bool | `true` | Enable the control plane |
-| controlPlane.meshConfig | object | `{}` | Setup the mesh config - https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/ - see values for example |
-| dashboards.enabled | bool | `true` | Can be set to false to disable dashboards configmaps |
-| enableCRDTemplates | bool | `false` |  |
-| image.repo | string | `"docker.io/istio"` | The repo to be used |
-| image.tag | string | `"1.12.0"` | The tag to be used |
-| operator.affinity | object | `{}` | K8S Resources |
+| eventing.use_ceph | bool | `false` |  |
+| eventing.use_couchdb | bool | `false` |  |
+| eventing.use_github | bool | `false` |  |
+| eventing.use_gitlab | bool | `false` |  |
+| eventing.use_kafka | bool | `false` |  |
+| eventing.use_natss | bool | `false` |  |
+| eventing.use_prometheus | bool | `false` |  |
+| eventing.use_rabbitmq | bool | `false` |  |
+| eventing.use_redis | bool | `false` |  |
+| image.repo | string | `"gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256"` | The repo to be used |
+| image.tag | string | `"c604ba6048db9ccab664894134d39468992e11b9ec858be9cc621a90bae9a378"` | The tag to be used |
 | operator.imagePullPolicy | string | `"IfNotPresent"` | The name of the operator deployment |
-| operator.imagePullSecrets | object | `{}` | K8S Resources |
-| operator.istioNamespace.create | bool | `true` | The whether istio should be automatically deployed |
 | operator.istioNamespace.name | string | `"istio-system"` | The namespace that istio is installed to |
-| operator.name | string | `"istio-operator"` | The name of the operator deployment |
-| operator.nodeSelector | object | `{}` | K8S Resources |
-| operator.operatorNamespace.name | string | `"istio-operator"` | The namespace that the operator will be deployed in |
-| operator.podSecurityContext | object | `{}` | K8S Resources |
-| operator.prometheusNamespace.name | string | `"monitoring"` | The namespace that prometheus is in |
-| operator.replicas | int | `1` | How many replicas of the operator |
-| operator.resources | object | `{}` | K8S Resources |
-| operator.tolerations | object | `{}` | K8S Resources |
-| serviceMonitors.enabled | bool | `true` | Can be set to false to disable servicemonitor configmaps |
+| operator.name | string | `"knative-operator"` | The name of the operator deployment |
+| operator.operatorNamespace.create | bool | `true` |  |
+| operator.operatorNamespace.name | string | `"knative-operator"` | The namespace that the operator will be deployed in |
+| serving.use_contour | bool | `false` |  |
+| serving.use_istio | bool | `false` |  |
