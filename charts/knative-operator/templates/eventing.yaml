@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: knative-eventing
+---
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeEventing
+metadata:
+  name: knative-eventing
+  namespace: knative-eventing
+spec:
+  source:
+    {{- if .Values.eventing.use_ceph }}
+    ceph:
+      enabled: {{ .Values.eventing.use_ceph }}
+    {{ end }}
+    {{- if .Values.eventing.use_couchdb }}
+    couchdb:
+      enabled: {{ .Values.eventing.use_couchdb }}
+    {{ end }}
+    {{- if .Values.eventing.use_github }}
+    github:
+      enabled: {{ .Values.eventing.use_github }}
+    {{ end }}
+    {{- if .Values.eventing.use_gitlab }}
+    gitlab:
+      enabled: {{ .Values.eventing.use_gitlab }}
+    {{ end }}
+    {{- if .Values.eventing.use_kafka }}
+    kafka:
+      enabled: {{ .Values.eventing.use_kafka }}
+    {{ end }}
+    {{- if .Values.eventing.use_natss }}
+    natss:
+      enabled: {{ .Values.eventing.use_natss }}
+    {{ end }}
+    {{- if .Values.eventing.use_prometheus }}
+    prometheus:
+      enabled: {{ .Values.eventing.use_prometheus }}
+    {{ end }}
+    {{- if .Values.eventing.use_rabbitmq }}
+    rabbitmq:
+      enabled: {{ .Values.eventing.use_rabbitmq }}
+    {{ end }}
+    {{- if .Values.eventing.use_redis }}
+    redis:
+      enabled: {{ .Values.eventing.use_redis }}
+    {{ end }}

@@ -1,0 +1,99 @@
+---
+# Default values for istio-operator.
+
+image:
+  # -- The repo to be used
+  repo: gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256
+  # -- The tag to be used
+  tag: c604ba6048db9ccab664894134d39468992e11b9ec858be9cc621a90bae9a378
+
+operator:
+  # -- The name of the operator deployment
+  name: knative-operator
+  # -- The name of the operator deployment
+  imagePullPolicy: IfNotPresent
+  operatorNamespace:
+    # -- The namespace that the operator will be deployed in
+    name: knative-operator
+    create: true
+  istioNamespace:
+    # -- The namespace that istio is installed to
+    name: istio-system
+serving:
+  use_contour: false
+  use_istio: false
+eventing:
+  use_ceph: false
+  use_couchdb: false
+  use_github: false
+  use_gitlab: false
+  use_kafka: false
+  use_natss: false
+  use_prometheus: false
+  use_rabbitmq: false
+  use_redis: false
+  # -- How many replicas of the operator
+#  prometheusNamespace:
+#    # -- The namespace that prometheus is in
+#    name: monitoring
+#  replicas: 1
+#  # -- K8S Resources
+#  resources: {}
+#  # -- K8S Resources
+#  imagePullSecrets: {}
+#  # -- K8S Resources
+#  podSecurityContext: {}
+#  # -- K8S Resources
+#  nodeSelector: {}
+#  # -- K8S Resources
+#  affinity: {}
+#  # -- K8S Resources
+#  tolerations: {}
+#
+## -- Control plane config - see https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#IstioOperatorSpec
+#controlPlane:
+#  # -- Enable the control plane
+#  enabled: true
+#  # -- Addon components https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#ExternalComponentSpec  - see values for example
+#  addonComponents: {}
+##    grafana:
+##      enabled: false
+#
+#   # -- Setup the mesh config - https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/ - see values for example
+#  meshConfig: {}
+##    accessLogFile: /dev/stdout
+##    enableAutoMtls: true
+##    outboundTrafficPolicy:
+##      mode: REGISTRY_ONLY # TODO: You can enable this once infra is in place to manage it.
+##      mode: ALLOW_ANY
+##    rootNamespace: istio-system
+##    enablePrometheusMerge: true
+##    enableTracing: true
+##    defaultConfig:
+##      zipkin:
+##        address: PATH_TO_JAEGER
+#
+#  # -- Setup the mesh config - https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#IstioComponentSetSpec - see values for example
+#  components: {}
+##    egressGateways:
+##      - name: istio-egressgateway
+##        enabled: true
+##        namespace: istio-system
+##             k8s:
+##               serviceAnnotations:
+##                 external-dns.alpha.kubernetes.io/hostname: some.domain.com
+##    ingressGateways:
+##      - name: istio-ingressgateway
+##        enabled: true
+##        namespace: istio-system
+##         k8s:
+##           serviceAnnotations:
+##             external-dns.alpha.kubernetes.io/hostname: some.domain.com
+#serviceMonitors:
+#  # -- Can be set to false to disable servicemonitor configmaps
+#  enabled: true
+##  labels: {}
+#
+#dashboards:
+#  # -- Can be set to false to disable dashboards configmaps
+#  enabled: true

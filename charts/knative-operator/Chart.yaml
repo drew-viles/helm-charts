@@ -1,0 +1,17 @@
+---
+
+apiVersion: v1
+name: knative
+version: 1.4.1
+appVersion: 1.4.1
+description: Helm chart for deploying Knative operator
+maintainers:
+  - name: Drew
+    email: drew@viles.uk
+keywords:
+  - knative
+  - operator
+sources:
+  - https://drew-viles.github.io/helm-charts/knative-operator
+engine: gotpl
+icon: https://knative.dev/docs/images/logo/rgb/knative-logo-rgb.png
