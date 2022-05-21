@@ -1,0 +1,94 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: web-database
+  labels:
+    app: postgres
+    app.kubernetes.io/instance: postgres
+    app.kubernetes.io/name: postgres
+    {{- include "e2e-testing.labels" . | nindent 4 }}
+  annotations:
+    meta.helm.sh/release-name: postgres
+    {{- include "e2e-testing.annotations" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: web-database
+  selector:
+    matchLabels:
+      app: database-backend
+  template:
+    metadata:
+      labels:
+        app: database-backend
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels: #Labels or expressions can be used to the same end result, expressions are just a little more flexible.
+                    app: database-backend
+                topologyKey: topology.kubernetes.io/zone
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100 # between 1-100 the higher the score the more likely it is to get priority on the selected node
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app #Looking for the key "app" in the labels
+                      operator: In
+                      values:
+                        - web-frontend  # any pod with the app label "nginx-frontend"
+                topologyKey: topology.kubernetes.io/zone # Optional - requires nodes to have this label - which they do for EKS.
+      serviceAccountName: {{.Values.postgres.serviceAccountName}}
+      initContainers:
+        - name: postegres-clean
+          image: busybox:latest
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - rm -rf /var/lib/postgresql/data/*
+            - rm -rf /var/lib/postgresql/data/.*
+          volumeMounts:
+            - name: data
+              {{- if (eq true .Values.postgres.statefulset.persistentData.enabled)}}
+              mountPath: "/var/lib/postgresql/data"
+              {{- end}}
+      containers:
+        - name: postgres
+          image: {{.Values.postgres.image.repo}}:{{.Values.postgres.image.tag}}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_PASSWORD
+              value: {{.Values.postgres.statefulset.env.postgresPassword}}
+{{- if .Values.postgres.statefulset.env.postgresUser }}
+            - name: POSTGRES_USER
+              value: {{.Values.postgres.statefulset.env.postgresUser}}
+{{- end }}
+          ports:
+            - containerPort: 5432
+              name: sql
+          volumeMounts:
+            - name: data
+              mountPath: "/var/lib/postgresql/data"
+      {{- if (eq false .Values.postgres.statefulset.persistentData.enabled)}}
+      volumes:
+        - name: data
+          emptyDir: { }
+      {{- end }}
+{{- if (eq true .Values.postgres.statefulset.persistentData.enabled)}}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{.Values.postgres.statefulset.persistentData.className}}
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: {{.Values.postgres.statefulset.persistentData.size}}
+{{- end }}

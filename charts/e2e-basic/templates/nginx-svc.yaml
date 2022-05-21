@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-e2e
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    meta.helm.sh/release-name: nginx-e2e
+    {{- include "e2e-testing.annotations" . | nindent 4 }}
+  labels:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    {{- include "e2e-testing.labels" . | nindent 4 }}
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    name: http
+  - port: 9113
+    protocol: TCP
+    targetPort: 9113
+    name: http-metrics
+  selector:
+    app: web-frontend
+  type: ClusterIP
