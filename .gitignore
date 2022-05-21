@@ -2,3 +2,4 @@
 !packages/
 packages/*.tar.gz
 packages/*.tgz
+e2e-workloads

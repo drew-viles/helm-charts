@@ -1,0 +1,15 @@
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{.Values.nginx.serviceAccountName}}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    meta.helm.sh/release-name: nginx-e2e
+    {{- include "e2e-testing.annotations" . | nindent 4 }}
+  annotations:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    {{- include "e2e-testing.labels" . | nindent 4 }}
