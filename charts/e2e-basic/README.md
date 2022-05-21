@@ -41,23 +41,25 @@ The following table lists the configurable parameters of the chart and the defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt-issuer"` |  |
-| ingress.className | string | `"nginx-ingress"` |  |
+| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt-prod"` |  |
+| ingress.annotations."external-dns.alpha.kubernetes.io/cloudflare-proxied" | string | `"false"` |  |
+| ingress.annotations."external-dns.alpha.kubernetes.io/hostname" | string | `"example.uk"` |  |
+| ingress.annotations."external-dns.alpha.kubernetes.io/target" | string | `"example.uk"` |  |
+| ingress.className | string | `"nginx"` |  |
 | ingress.enabled | bool | `true` |  |
-| ingress.host | string | `"some-host.example.com"` |  |
-| ingress.tls[0].hosts[0] | string | `"some-host.example.com"` |  |
-| ingress.tls[0].secretName | string | `"secret-name"` |  |
-| nameOverride | string | `""` |  |
+| ingress.host | string | `"test.example.uk"` |  |
+| ingress.tls[0].hosts[0] | string | `"test.example.uk"` |  |
+| ingress.tls[0].secretName | string | `"test-secret"` |  |
 | nginx.image.repo | string | `"nginx"` | The repo to be used |
-| nginx.image.tag | string | `"14.1-bullseye"` | The tag to be used |
+| nginx.image.tag | string | `"1.21-alpine"` | The tag to be used |
+| nginx.resources | object | `{}` |  |
 | nginx.serviceAccountName | string | `"nginx"` |  |
 | nginx.serviceMonitor.enabled | bool | `true` |  |
 | postgres.image.repo | string | `"postgres"` | The repo to be used |
 | postgres.image.tag | string | `"14.1-bullseye"` | The tag to be used |
-| postgres.service.type | string | `"ClusterIP"` |  |
 | postgres.serviceAccountName | string | `"postgresql"` |  |
 | postgres.statefulset.env.postgresPassword | string | `"some-password"` |  |
 | postgres.statefulset.env.postgresUser | string | `"some-user"` |  |
-| postgres.statefulset.persistentData.className | string | `"ebs-gp2-delete"` |  |
+| postgres.statefulset.persistentData.className | string | `"fast-disks"` |  |
 | postgres.statefulset.persistentData.enabled | bool | `true` |  |
 | postgres.statefulset.persistentData.size | string | `"10Gi"` |  |

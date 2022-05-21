@@ -11,12 +11,12 @@ nginx:
   serviceMonitor:
     enabled: true
   resources: {}
-    #requests:
-    #  memory: "500Mi"
-    #  cpu: "500m"
-    #limits:
-    #  memory: "1Gi"
-    #  cpu: "1000m"
+    # requests:
+    #   memory: "500Mi"
+    #   cpu: "500m"
+    # limits:
+    #   memory: "1Gi"
+    #   cpu: "1000m"
 
 ingress:
   enabled: true

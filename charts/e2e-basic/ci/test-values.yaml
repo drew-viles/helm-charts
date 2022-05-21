@@ -11,20 +11,20 @@ nginx:
   serviceMonitor:
     enabled: true
   resources: {}
-    #requests:
-    #  memory: "500Mi"
-    #  cpu: "500m"
-    #limits:
-    #  memory: "1Gi"
-  #  cpu: "1000m"
+    # requests:
+    #   memory: "500Mi"
+    #   cpu: "500m"
+    # limits:
+    #   memory: "1Gi"
+    #   cpu: "1000m"
 
 ingress:
   enabled: true
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    external-dns.alpha.kubernetes.io/target: "example.uk"
-    external-dns.alpha.kubernetes.io/hostname: "example.uk"
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+  annotations: {}
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # external-dns.alpha.kubernetes.io/target: "example.uk"
+    # external-dns.alpha.kubernetes.io/hostname: "example.uk"
+    # external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
   className: nginx
   host: test.example.uk
   tls:
