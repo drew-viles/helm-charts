@@ -1,0 +1,60 @@
+---
+# Default values for knative-operator.
+image:
+  # -- The repo to be used
+  repo: gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256
+  # -- The tag to be used
+  tag: c604ba6048db9ccab664894134d39468992e11b9ec858be9cc621a90bae9a378
+
+operator:
+  # -- The name of the operator deployment
+  name: knative-operator
+  # -- The name of the operator deployment
+  imagePullPolicy: IfNotPresent
+  operatorNamespace:
+    # -- The namespace that the operator will be deployed in
+    name: knative-operator
+    create: true
+  istioNamespace:
+    # -- The namespace that istio is installed to
+    name: istio-system
+  webhook:
+    # -- K8S Resources
+    resources: {}
+  knative:
+    # -- K8S Resources
+    resources: {}
+serving:
+  use_contour: false
+  use_istio: false
+eventing:
+  use_ceph: false
+  use_couchdb: false
+  use_github: true
+  use_gitlab: false
+  use_kafka: false
+  use_natss: false
+  use_prometheus: false
+  use_rabbitmq: false
+  use_redis: false
+#   prometheusNamespace:
+#     # -- The namespace that prometheus is in
+#     name: monitoring
+#  -- How many replicas of the operator
+#   replicas: 1
+#   # -- K8S Pull Secrets
+#   imagePullSecrets: {}
+#   # -- K8S Node Selector
+#   nodeSelector: {}
+#   # -- K8S affinity
+#   affinity: {}
+#   # -- K8S tolerations
+#   tolerations: {}
+# serviceMonitors:
+#   # -- Can be set to false to disable servicemonitor configmaps
+#   enabled: true
+#   labels: {}
+#
+# dashboards:
+#   # -- Can be set to false to disable dashboards configmaps
+#   enabled: true

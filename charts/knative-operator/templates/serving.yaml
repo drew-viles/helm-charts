@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: knative-serving
+---
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeServing
+metadata:
+  name: knative-serving
+  namespace: knative-serving
+spec:
+  ingress:
+    #ONLY ENABLE IN DEFAULT SCENARIO
+
+    {{- if or (ne .Values.serving.use_contour true) (ne .Values.serving.use_istio true)  }}
+    kourier:
+      enabled: true
+    {{- end }}
+    #ONLY ENABLE IF USE_CONTOUR == TRUE
+    {{- if .Values.serving.use_contour }}
+    contour:
+      enabled: {{ .Values.serving.use_contour }}
+    {{- end }}
+  config:
+    #ONLY ENABLE IF USE_ISTIO == TRUE
+    {{- if .Values.serving.use_istio }}
+    istio:
+      local-gateway.{{ .Values.istioNamespace }}.knative-local-gateway: "knative-local-gateway.{{ .Values.istioNamespace }}.svc.cluster.local"
+    {{- else }}
+    network:
+      #ONLY ENABLE IN DEFAULT SCENARIO
+    {{- if or (ne .Values.serving.use_contour true) (ne .Values.serving.use_istio true)  }}
+      ingress-class: "kourier.ingress.networking.knative.dev"
+      {{ else if .Values.serving.use_contour }}
+      #ONLY ENABLE IF USE_CONTOUR == TRUE
+      ingress-class: "contour.ingress.networking.knative.dev"
+      {{ end }}
+    {{ end }}
