@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.0.2](https://img.shields.io/badge/Version-0.0.2-informational?style=flat-square) ![AppVersion: 0.0.2](https://img.shields.io/badge/AppVersion-0.0.2-informational?style=flat-square) 
+![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![AppVersion: 0.0.3](https://img.shields.io/badge/AppVersion-0.0.3-informational?style=flat-square) 
 
 Helm chart for deploying a set of workloads which \ can be used for most End2End testing.
 
@@ -41,10 +41,7 @@ The following table lists the configurable parameters of the chart and the defau
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt-prod"` |  |
-| ingress.annotations."external-dns.alpha.kubernetes.io/cloudflare-proxied" | string | `"false"` |  |
-| ingress.annotations."external-dns.alpha.kubernetes.io/hostname" | string | `"example.uk"` |  |
-| ingress.annotations."external-dns.alpha.kubernetes.io/target" | string | `"example.uk"` |  |
+| ingress.annotations | object | `{}` |  |
 | ingress.className | string | `"nginx"` |  |
 | ingress.enabled | bool | `true` |  |
 | ingress.host | string | `"test.example.uk"` |  |
