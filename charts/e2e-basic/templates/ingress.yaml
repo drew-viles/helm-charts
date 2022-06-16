@@ -8,7 +8,9 @@ metadata:
   annotations:
     meta.helm.sh/release-name: nginx-e2e
     {{- include "e2e-testing.annotations" . | nindent 4 }}
-    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- if .Values.ingress.annotations }}
+      {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- end }}
   labels:
     app: nginx-e2e
     app.kubernetes.io/instance: nginx-e2e
