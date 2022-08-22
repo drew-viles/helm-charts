@@ -15,24 +15,22 @@ metadata:
 data:
   index: |
     <?php
-      $servername = "database-e2e.{{ .Release.Namespace }}";
-      {{- if .Values.postgres.statefulset.env.postgresUser }}
-      $username = "{{ .Values.postgres.statefulset.env.postgresUser }}";
-      {{- else }}
-      $username = "root";
-      {{- end }}
-      $password = "{{ .Values.postgres.statefulset.env.postgresPassword }}";
+      $servername = "database-e2e.cloudops-testing";
+      $username = "cloudops-user";
+      $password = getenv('POSTGRES_PASSWORD');
       $arr = array("success" => false, "data" => "");
-  
+    
       try {
-        $conn = new PDO("pgsql:host=$servername;port=5432;dbname=test", $username, $password);
+        $conn = new PDO("pgsql:host=$servername;port=5432;dbname=cloudops-test", $username, $password);
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->query("SELECT value FROM web");
         $result = $stmt->fetch();
     
         if (!$result) {
+          $arr['success'] = false;
           $arr['data'] = "not ok";
+          header("HTTP/1.0 500 Internal Server Error");
         }else{
           $arr['success'] = true;
           $arr['data'] = $result["value"];
@@ -45,4 +43,32 @@ data:
     
       header('Content-type: application/json');
       echo json_encode($arr);
+    ?>
+  healthz: |
+    <?php
+      $servername = "database-e2e.cloudops-testing";
+      $username = "cloudops-user";
+      $password = getenv('POSTGRES_PASSWORD');
+      $arr = array("success" => false, "data" => "");
+    
+      try {
+        $conn = new PDO("pgsql:host=$servername;port=5432;dbname=cloudops-test", $username, $password);
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $conn->query("SELECT value FROM web");
+        $result = $stmt->fetch();
+    
+        if (!$result) {
+          header("HTTP/1.0 500 Internal Server Error");
+          return;
+        }
+        $conn = null;
+      } catch(PDOException $e) {
+          header("HTTP/1.0 500 Internal Server Error");
+          return;
+      }
+    
+      header("HTTP/1.0 200 OK");
+      header('Content-type: application/json');
+      echo json_encode(array("success" => true, "data" => "ok"));
     ?>
