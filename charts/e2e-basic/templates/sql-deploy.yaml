@@ -13,8 +13,8 @@ metadata:
     meta.helm.sh/release-name: postgres
     {{- include "e2e-testing.annotations" . | nindent 4 }}
 spec:
-  replicas: 1
-  serviceName: web-database
+  replicas: 3
+  serviceName: database-e2e
   selector:
     matchLabels:
       app: database-backend
@@ -29,20 +29,20 @@ spec:
             - weight: 100
               podAffinityTerm:
                 labelSelector:
-                  matchLabels: #Labels or expressions can be used to the same end result, expressions are just a little more flexible.
+                  matchLabels:
                     app: database-backend
                 topologyKey: topology.kubernetes.io/zone
         podAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100 # between 1-100 the higher the score the more likely it is to get priority on the selected node
+            - weight: 100
               podAffinityTerm:
                 labelSelector:
                   matchExpressions:
-                    - key: app #Looking for the key "app" in the labels
+                    - key: app
                       operator: In
                       values:
-                        - web-frontend  # any pod with the app label "nginx-frontend"
-                topologyKey: topology.kubernetes.io/zone # Optional - requires nodes to have this label - which they do for EKS.
+                        - web-frontend
+                topologyKey: topology.kubernetes.io/zone
       serviceAccountName: {{.Values.postgres.serviceAccountName}}
       initContainers:
         - name: postegres-clean
@@ -53,34 +53,57 @@ spec:
             - -c
             - rm -rf /var/lib/postgresql/data/*
             - rm -rf /var/lib/postgresql/data/.*
+          {{- if (eq true .Values.postgres.statefulset.persistentData.enabled)}}
           volumeMounts:
             - name: data
-              {{- if (eq true .Values.postgres.statefulset.persistentData.enabled)}}
               mountPath: "/var/lib/postgresql/data"
-              {{- end}}
+          {{- end}}
       containers:
         - name: postgres
           image: {{.Values.postgres.image.repo}}:{{.Values.postgres.image.tag}}
           imagePullPolicy: IfNotPresent
           env:
             - name: POSTGRES_PASSWORD
-              value: {{.Values.postgres.statefulset.env.postgresPassword}}
-{{- if .Values.postgres.statefulset.env.postgresUser }}
+              valueFrom:
+                secretKeyRef:
+                  key: passwd
+                  name: pg-password
             - name: POSTGRES_USER
               value: {{.Values.postgres.statefulset.env.postgresUser}}
-{{- end }}
+            - name: POSTGRES_DB
+              value: {{.Values.postgres.statefulset.env.postgresDB}
+#            - name: PGPASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  key: passwd
+#                  name: pg-password
+#            - name: PGUSER
+#              value: {{.Values.postgres.statefulset.env.postgresUser}}}
+#            - name: PGDATABASE
+#              value: {{.Values.postgres.statefulset.env.postgresDB}}
           ports:
             - containerPort: 5432
               name: sql
+          {{- if (eq true .Values.postgres.statefulset.persistentData.enabled)}}
           volumeMounts:
             - name: data
               mountPath: "/var/lib/postgresql/data"
+          {{- end }}
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/bash
+                  - -c
+                  - |
+                    sleep 20;
+                    psql -hlocalhost -c "CREATE TABLE IF NOT EXISTS web (id SERIAL PRIMARY KEY, value VARCHAR(10) NOT NULL )";
+                    psql -hlocalhost -c "INSERT INTO web (value) VALUES('ok')";
       {{- if (eq false .Values.postgres.statefulset.persistentData.enabled)}}
       volumes:
         - name: data
           emptyDir: { }
-      {{- end }}
-{{- if (eq true .Values.postgres.statefulset.persistentData.enabled)}}
+      {{- else }}
   volumeClaimTemplates:
     - metadata:
         name: data
