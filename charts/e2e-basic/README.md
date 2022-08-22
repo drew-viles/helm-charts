@@ -97,11 +97,11 @@ The following table lists the configurable parameters of the chart and the defau
 | monitoring.grafana.dashboards | bool | `false` |  |
 | monitoring.serviceMonitor.enabled | bool | `false` |  |
 | nginx.image.repo | string | `"nginx"` | The repo to be used |
-| nginx.image.tag | string | `"1.21-alpine"` | The tag to be used |
+| nginx.image.tag | string | `"1.23-alpine"` | The tag to be used |
 | nginx.resources | object | `{}` |  |
 | nginx.serviceAccountName | string | `"nginx"` |  |
 | postgres.image.repo | string | `"postgres"` | The repo to be used |
-| postgres.image.tag | string | `"14.1-bullseye"` | The tag to be used |
+| postgres.image.tag | string | `"14.5-alpine"` | The tag to be used |
 | postgres.serviceAccountName | string | `"postgresql"` |  |
 | postgres.statefulset.env.postgresDB | string | `"e2e-user"` |  |
 | postgres.statefulset.env.postgresPassword | string | `"e2e-password"` |  |
