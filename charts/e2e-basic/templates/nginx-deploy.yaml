@@ -114,6 +114,8 @@ spec:
                 path: index.php
               - key: healthz
                 path: healthz.php
+              - key: common
+                path: common.php
         - name: conf
           configMap:
             name: nginx-conf

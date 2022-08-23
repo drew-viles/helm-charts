@@ -91,11 +91,11 @@ The following table lists the configurable parameters of the chart and the defau
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `"nginx"` |  |
 | ingress.enabled | bool | `true` |  |
-| ingress.host | string | `"test.example.uk"` |  |
-| ingress.tls[0].hosts[0] | string | `"test.example.uk"` |  |
+| ingress.host | string | `"test.hudson-viles.uk"` |  |
+| ingress.tls[0].hosts[0] | string | `"test.hudson-viles.uk"` |  |
 | ingress.tls[0].secretName | string | `"test-secret"` |  |
-| monitoring.grafana.dashboards | bool | `false` |  |
-| monitoring.serviceMonitor.enabled | bool | `false` |  |
+| monitoring.grafana.dashboards | bool | `true` |  |
+| monitoring.serviceMonitor.enabled | bool | `true` |  |
 | nginx.image.repo | string | `"nginx"` | The repo to be used |
 | nginx.image.tag | string | `"1.23-alpine"` | The tag to be used |
 | nginx.resources | object | `{}` |  |

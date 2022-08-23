@@ -49,6 +49,6 @@ postgres:
 
 monitoring:
   grafana:
-    dashboards: false
+    dashboards: true
   serviceMonitor:
-    enabled: false
+    enabled: true

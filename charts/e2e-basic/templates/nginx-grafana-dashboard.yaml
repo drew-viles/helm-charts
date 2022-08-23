@@ -4,6 +4,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: grafana-dashboard
   namespace: {{ .Release.Namespace }}
   annotations:
     meta.helm.sh/release-name: nginx-e2e

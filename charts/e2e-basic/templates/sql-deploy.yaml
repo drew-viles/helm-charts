@@ -71,24 +71,22 @@ spec:
             - name: POSTGRES_USER
               value: {{.Values.postgres.statefulset.env.postgresUser}}
             - name: POSTGRES_DB
-              value: {{.Values.postgres.statefulset.env.postgresDB}
-#            - name: PGPASSWORD
-#              valueFrom:
-#                secretKeyRef:
-#                  key: passwd
-#                  name: pg-password
-#            - name: PGUSER
-#              value: {{.Values.postgres.statefulset.env.postgresUser}}}
-#            - name: PGDATABASE
-#              value: {{.Values.postgres.statefulset.env.postgresDB}}
+              value: {{.Values.postgres.statefulset.env.postgresDB}}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: passwd
+                  name: pg-password
+            - name: PGUSER
+              value: {{.Values.postgres.statefulset.env.postgresUser}}
+            - name: PGDATABASE
+              value: {{.Values.postgres.statefulset.env.postgresDB}}
           ports:
             - containerPort: 5432
               name: sql
-          {{- if (eq true .Values.postgres.statefulset.persistentData.enabled)}}
           volumeMounts:
             - name: data
               mountPath: "/var/lib/postgresql/data"
-          {{- end }}
           lifecycle:
             postStart:
               exec:
