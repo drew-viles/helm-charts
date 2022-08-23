@@ -1,7 +1,7 @@
-{{- if .Values.monitoring.serviceMonitor.enabled -}}
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
 metadata:
   name: nginx-e2e
   namespace: {{ .Release.Namespace }}
@@ -14,16 +14,7 @@ metadata:
     app.kubernetes.io/name: nginx-e2e
     {{- include "e2e-testing.labels" . | nindent 4 }}
 spec:
-  endpoints:
-    - interval: 1m
-      path: /metrics
-      port: http-metrics
-  jobLabel: nginx-e2e
-  namespaceSelector:
-    matchNames:
-      - {{ .Release.Namespace }}
+  minAvailable: 2
   selector:
     matchLabels:
-      app.kubernetes.io/instance: nginx-e2e
-      app.kubernetes.io/name: nginx-e2e
-{{- end}}
+      app: web-frontend

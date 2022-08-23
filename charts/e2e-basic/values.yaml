@@ -6,10 +6,8 @@ nginx:
     # -- The repo to be used
     repo: nginx
     # -- The tag to be used
-    tag: 1.21-alpine
+    tag: 1.23-alpine
   serviceAccountName: "nginx"
-  serviceMonitor:
-    enabled: true
   resources: {}
   # requests:
   #   memory: "500Mi"
@@ -37,7 +35,7 @@ postgres:
     # -- The repo to be used
     repo: postgres
     # -- The tag to be used
-    tag: 14.1-bullseye
+    tag: 14.5-alpine
   serviceAccountName: postgresql
   statefulset:
     persistentData:
@@ -45,5 +43,12 @@ postgres:
       className: "fast-disks"
       size: 10Gi
     env:
-      postgresPassword: "some-password"
-      postgresUser: "some-user"
+      postgresPassword: "e2e-password"
+      postgresUser: "e2e-user"
+      postgresDB: "e2e-user"
+
+monitoring:
+  grafana:
+    dashboards: true
+  serviceMonitor:
+    enabled: true
