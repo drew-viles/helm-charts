@@ -13,6 +13,7 @@ metadata:
     app: nginx-e2e
     app.kubernetes.io/instance: nginx-e2e
     app.kubernetes.io/name: nginx-e2e
+    grafana_dashboard: "1"
     {{- include "e2e-testing.labels" . | nindent 4 }}
 data:
   run.sh: |-
