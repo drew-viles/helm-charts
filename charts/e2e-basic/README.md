@@ -2,7 +2,7 @@
 
 
 
-![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![AppVersion: 0.0.4](https://img.shields.io/badge/AppVersion-0.0.4-informational?style=flat-square) 
+![Version: 0.0.5](https://img.shields.io/badge/Version-0.0.5-informational?style=flat-square) ![AppVersion: 0.0.5](https://img.shields.io/badge/AppVersion-0.0.5-informational?style=flat-square) 
 
 # Generic End-2-End testing
 
@@ -106,7 +106,7 @@ The following table lists the configurable parameters of the chart and the defau
 | monitoring.grafana.dashboards | bool | `true` |  |
 | monitoring.serviceMonitor.enabled | bool | `true` |  |
 | nginx.image.repo | string | `"nginx"` | The repo to be used |
-| nginx.image.tag | string | `"1.23-alpine"` | The tag to be used |
+| nginx.image.tag | string | `"1.23.1-alpine"` | The tag to be used |
 | nginx.resources | object | `{}` |  |
 | nginx.serviceAccountName | string | `"nginx"` |  |
 | postgres.image.repo | string | `"postgres"` | The repo to be used |

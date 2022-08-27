@@ -15,17 +15,13 @@ metadata:
 data:
   common: |
     <?php
-
-      $servername = "database-e2e.{{ .Release.Namespace }}";
-      $username = "{{ .Values.postgres.statefulset.env.postgresUser }}";
-      $password = getenv('POSTGRES_PASSWORD');
       $arr = array("success" => false, "data" => "");
       $retries = 5;
 
       function connectToDB($attempt){
-        global $servername;
-        global $username;
-        global $password;
+        $servername = "database-e2e.{{ .Release.Namespace }}";
+        $username = "{{ .Values.postgres.statefulset.env.postgresUser }}";
+        $password = getenv('POSTGRES_PASSWORD');
         $pgconn = '';
 
         try {

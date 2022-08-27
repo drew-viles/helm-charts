@@ -72,33 +72,20 @@ spec:
               value: {{.Values.postgres.statefulset.env.postgresUser}}
             - name: POSTGRES_DB
               value: {{.Values.postgres.statefulset.env.postgresDB}}
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: passwd
-                  name: pg-password
-            - name: PGUSER
-              value: {{.Values.postgres.statefulset.env.postgresUser}}
-            - name: PGDATABASE
-              value: {{.Values.postgres.statefulset.env.postgresDB}}
           ports:
             - containerPort: 5432
               name: sql
           volumeMounts:
             - name: data
               mountPath: "/var/lib/postgresql/data"
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - /bin/bash
-                  - -c
-                  - |
-                    sleep 20;
-                    psql -hlocalhost -c "CREATE TABLE IF NOT EXISTS web (id SERIAL PRIMARY KEY, value VARCHAR(10) NOT NULL )";
-                    psql -hlocalhost -c "INSERT INTO web (value) VALUES('ok')";
-      {{- if (eq false .Values.postgres.statefulset.persistentData.enabled)}}
+            - name: init-data
+              mountPath: "/docker-entrypoint-initdb.d"
       volumes:
+        - name: init-data
+          configMap:
+            name: sql-init
+            defaultMode: 0755
+      {{- if (eq false .Values.postgres.statefulset.persistentData.enabled)}}
         - name: data
           emptyDir: { }
       {{- else }}

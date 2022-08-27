@@ -6,7 +6,7 @@ nginx:
     # -- The repo to be used
     repo: nginx
     # -- The tag to be used
-    tag: 1.23-alpine
+    tag: 1.23.1-alpine
   serviceAccountName: "nginx"
   resources: {}
   # requests:
