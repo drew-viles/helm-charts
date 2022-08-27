@@ -2,8 +2,8 @@
 
 apiVersion: v1
 name: End-2-End-Testing
-version: 0.0.4
-appVersion: 0.0.4
+version: 0.0.5
+appVersion: 0.0.5
 description: |
   # Generic End-2-End testing
 
