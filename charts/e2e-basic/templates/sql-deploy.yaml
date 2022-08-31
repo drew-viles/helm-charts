@@ -45,7 +45,7 @@ spec:
                 topologyKey: topology.kubernetes.io/zone
       serviceAccountName: {{.Values.postgres.serviceAccountName}}
       initContainers:
-        - name: postegres-clean
+        - name: postgres-clean
           image: busybox:latest
           command:
             - /bin/sh
@@ -75,6 +75,11 @@ spec:
           ports:
             - containerPort: 5432
               name: sql
+          readinessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            tcpSocket:
+              portL: 5432
           volumeMounts:
             - name: data
               mountPath: "/var/lib/postgresql/data"

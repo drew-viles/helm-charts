@@ -73,6 +73,8 @@ spec:
               protocol: TCP
               containerPort: 80
           readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 5
             httpGet:
               port: 80
               path: /healthz.php
