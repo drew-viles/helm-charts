@@ -1,11 +1,11 @@
 name: Lint and Test Charts
 
 on:
-  push:
-    branches:
-      - 'releases/**'
-    paths:
-      - 'charts/**'
+#  push:
+#    branches:
+#      - 'releases/**'
+#    paths:
+#      - 'charts/**'
   pull_request:
   workflow_dispatch:
 
