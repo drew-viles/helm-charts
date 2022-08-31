@@ -7,7 +7,7 @@ chmod +x kubectl
 
 CRDS_DIR=/tmp/crds/
 mkdir -p "${CRDS_DIR}"
-wget "https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/release-0.9/manifests/setup/prometheus-operator-0servicemonitorCustomResourceDefinition.yaml" -O "${CRDS_DIR}/crd-servicemonitor.yaml"
+wget "https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/v0.11.0/manifests/setup/0servicemonitorCustomResourceDefinition.yaml" -O "${CRDS_DIR}/crd-servicemonitor.yaml"
 ./kubectl create ns monitoring
 ./kubectl create ns istio-operator
 
