@@ -1,0 +1,1319 @@
+---
+# Source: End-2-End-Testing/templates/nginx-pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: nginx-e2e
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: nginx-e2e
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: web-frontend
+---
+# Source: End-2-End-Testing/templates/sql-pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: postgres
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: postgres
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: postgres
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: database-backend
+---
+# Source: End-2-End-Testing/templates/nginx-svc-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nginx
+  namespace: testing
+  labels:
+    meta.helm.sh/release-name: nginx-e2e
+    meta.helm.sh/release-namespace: "testing"
+  annotations:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+---
+# Source: End-2-End-Testing/templates/sql-svc-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: postgresql
+  namespace: testing
+  labels:
+    meta.helm.sh/release-name: postgres
+    meta.helm.sh/release-namespace: "testing"
+  annotations:
+    app: postgres
+    app.kubernetes.io/instance: postgres
+    app.kubernetes.io/name: postgres
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+---
+# Source: End-2-End-Testing/templates/sql-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pg-password
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: postgres
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: postgres
+    app.kubernetes.io/instance: postgres
+    app.kubernetes.io/name: postgres
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+data:
+  passwd: ZTJlLXBhc3N3b3Jk
+---
+# Source: End-2-End-Testing/templates/nginx-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: nginx-e2e
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+data:
+  default: |
+    log_format custom_format '$remote_addr - $remote_user [$time_local] '
+      '"$request" $status $body_bytes_sent '
+      '"$http_referer" "$http_user_agent" '
+      '$upstream_response_time';
+    
+    server {
+      listen       80 default_server;
+      listen  [::]:80 default_server;
+      server_name  _;
+      error_log  /var/log/nginx/error.log;
+      access_log /var/log/nginx/access.log custom_format;
+      root /usr/share/nginx/html;
+      index    index.html index.htm index.php;
+
+      location ~ \.php$ {
+          try_files $uri =404;
+          fastcgi_split_path_info ^(.+\.php)(/.+)$;
+          fastcgi_pass localhost:9000;
+          fastcgi_index index.php;
+          include fastcgi_params;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          fastcgi_param PATH_INFO $fastcgi_path_info;
+      }
+    }
+
+  metrics: |
+    server { 
+      listen       8080;
+      listen  [::]:8080;
+      server_name _;
+      
+      location /stub_status {
+          stub_status on;
+      }
+    }
+---
+# Source: End-2-End-Testing/templates/nginx-grafana-dashboard.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: nginx-e2e
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    grafana_dashboard: "1"
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+data:
+  run.sh: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "target": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 61,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "id": 6,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "9.0.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "code",
+              "expr": "count(nginx_up)",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Nginx Online",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "id": 12,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "builder",
+              "expr": "nginx_connections_handled",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Connections Handled",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
+          "id": 10,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "vertical",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "text": {
+              "titleSize": 1
+            },
+            "textMode": "value"
+          },
+          "pluginVersion": "9.0.1",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "builder",
+              "expr": "nginx_connections_reading",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "builder",
+              "expr": "nginx_connections_writing",
+              "hide": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "Reading/Writing",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 8
+          },
+          "id": 2,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "builder",
+              "expr": "nginx_connections_accepted",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "E2E Connections Accepted",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 16
+          },
+          "id": 14,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "builder",
+              "expr": "rate(nginx_http_requests_total[$__rate_interval])",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Total requests",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 17
+          },
+          "id": 8,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "builder",
+              "expr": "nginx_connections_waiting",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "hide": false,
+              "refId": "B"
+            }
+          ],
+          "title": "Connections Waiting",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 25
+          },
+          "id": 4,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+              },
+              "editorMode": "builder",
+              "expr": "nginx_connections_active",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "E2E Connections Active",
+          "type": "timeseries"
+        }
+      ],
+      "refresh": false,
+      "schemaVersion": 36,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "2022-08-05T14:18:22.671Z",
+        "to": "2022-08-05T15:03:21.727Z"
+      },
+      "timepicker": {},
+      "timezone": "",
+      "title": "End2End Testing",
+      "uid": "LOWihQk4k",
+      "version": 5,
+      "weekStart": ""
+    }
+---
+# Source: End-2-End-Testing/templates/sql-init-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sql-init
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: postgres
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: postgres
+    app.kubernetes.io/instance: postgres
+    app.kubernetes.io/name: postgres
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+data:
+  "init-user-db.sh": |
+    #!/bin/bash
+    set -e
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+    	CREATE TABLE IF NOT EXISTS web (id SERIAL PRIMARY KEY, value VARCHAR(10) NOT NULL );
+        INSERT INTO web (value) VALUES('ok');
+    EOSQL
+---
+# Source: End-2-End-Testing/templates/wepage-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-index
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: nginx-e2e
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+data:
+  common: |
+    <?php
+      $arr = array("success" => false, "data" => "");
+      $retries = 5;
+
+      function connectToDB($attempt){
+        $servername = "database-e2e.testing";
+        $username = "e2e-user";
+        $password = getenv('POSTGRES_PASSWORD');
+        $pgconn = '';
+
+        try {
+          $pgconn = new PDO("pgsql:host=$servername;port=5432;dbname=e2e-user", $username, $password);
+        } catch(PDOException $e) {
+          if ($attempt > 5){
+            return false;
+          }
+          sleep(5);
+          connectToDB($attempt+1);
+        }
+        return $pgconn;
+      }
+    ?>
+  index: |
+    <?php
+      include 'common.php';
+      $conn = connectToDB(0);
+      if(!$conn){
+          $arr['success'] = false;
+          $arr['data'] = "Couldn't connect to Postgres backend: " . $e->getMessage();
+      }else{
+        try {
+          // set the PDO error mode to exception
+          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+          $stmt = $conn->query("SELECT value FROM web");
+          $result = $stmt->fetch();
+
+          if (!$result) {
+            $arr['success'] = false;
+            $arr['data'] = "not ok";
+            header("HTTP/1.0 500 Internal Server Error");
+          }else{
+            $arr['success'] = true;
+            $arr['data'] = $result["value"];
+            header("HTTP/1.0 200 OK");
+          }
+        } catch(PDOException $e) {
+          $arr['success'] = false;
+          $arr['data'] = "Failed to get data: " . $e->getMessage();
+          header("HTTP/1.0 200 Internal Server Error");
+        }
+      }
+
+      $conn = null;
+      header('Content-type: application/json');
+      echo json_encode($arr);
+    ?>
+  healthz: |
+    <?php
+      include 'common.php';
+      $conn = connectToDB(0);
+      if(!$conn){
+          $arr['success'] = false;
+          $arr['data'] = "Couldn't connect to Postgres backend: " . $e->getMessage();
+      }else{
+        try {
+          // set the PDO error mode to exception
+          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+          $stmt = $conn->query("SELECT value FROM web");
+          $result = $stmt->fetch();
+
+          if (!$result) {
+            header("HTTP/1.0 500 Internal Server Error");
+            return;
+          }
+          $conn = null;
+        } catch(PDOException $e) {
+            header("HTTP/1.0 500 Internal Server Error");
+            return;
+        }
+      }
+
+      header("HTTP/1.0 200 OK");
+      header('Content-type: application/json');
+      echo json_encode(array("success" => true, "data" => "ok"));
+    ?>
+---
+# Source: End-2-End-Testing/templates/nginx-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-e2e
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: nginx-e2e
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+      name: http
+    - port: 9113
+      protocol: TCP
+      targetPort: 9113
+      name: http-metrics
+  selector:
+    app: web-frontend
+  type: ClusterIP
+---
+# Source: End-2-End-Testing/templates/sql-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-e2e
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: postgres
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: postgres
+    app.kubernetes.io/instance: postgres
+    app.kubernetes.io/name: postgres
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  clusterIP: None
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+      name: sql
+  selector:
+    app: database-backend
+---
+# Source: End-2-End-Testing/templates/nginx-deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-e2e
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: nginx-e2e
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: web-frontend
+    spec:
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: database-backend
+                topologyKey: topology.kubernetes.io/zone
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - web-frontend
+                topologyKey: topology.kubernetes.io/zone
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      serviceAccountName: nginx
+      containers:
+        - name: nginx
+          image: nginx:1.23.1-alpine
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: passwd
+                  name: pg-password
+          # Resources put in place for cluster-autoscaling testing. Simply scale to 10 pods to ensure new nodes come in.
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 80
+          readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            httpGet:
+              port: 80
+              path: /healthz.php
+          volumeMounts:
+            - name: index-html
+              mountPath: /usr/share/nginx/html
+            - name: conf
+              mountPath: /etc/nginx/conf.d
+        - name: php
+          image: drewviles/php-pdo:8.0.18-fpm
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: passwd
+                  name: pg-password
+          ports:
+            - name: php
+              protocol: TCP
+              containerPort: 9000
+          volumeMounts:
+            - name: index-html
+              mountPath: /usr/share/nginx/html
+        - name: nginx-prometheus
+          image: nginx/nginx-prometheus-exporter
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9113
+              name: http-metrics
+      volumes:
+        - name: index-html
+          configMap:
+            name: nginx-index
+            items:
+              - key: index
+                path: index.php
+              - key: healthz
+                path: healthz.php
+              - key: common
+                path: common.php
+        - name: conf
+          configMap:
+            name: nginx-conf
+            items:
+              - key: default
+                path: default.conf
+              - key: metrics
+                path: metrics.conf
+---
+# Source: End-2-End-Testing/templates/sql-deploy.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: testing
+  name: web-database
+  labels:
+    app: postgres
+    app.kubernetes.io/instance: postgres
+    app.kubernetes.io/name: postgres
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+  annotations:
+    meta.helm.sh/release-name: postgres
+    meta.helm.sh/release-namespace: "testing"
+spec:
+  replicas: 3
+  serviceName: database-e2e
+  selector:
+    matchLabels:
+      app: database-backend
+  template:
+    metadata:
+      labels:
+        app: database-backend
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: database-backend
+                topologyKey: topology.kubernetes.io/zone
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - web-frontend
+                topologyKey: topology.kubernetes.io/zone
+      serviceAccountName: postgresql
+      initContainers:
+        - name: postegres-clean
+          image: busybox:latest
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - rm -rf /var/lib/postgresql/data/*
+            - rm -rf /var/lib/postgresql/data/.*
+          volumeMounts:
+            - name: data
+              mountPath: "/var/lib/postgresql/data"
+      containers:
+        - name: postgres
+          image: postgres:14.5-alpine
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: passwd
+                  name: pg-password
+            - name: POSTGRES_USER
+              value: e2e-user
+            - name: POSTGRES_DB
+              value: e2e-user
+          ports:
+            - containerPort: 5432
+              name: sql
+          volumeMounts:
+            - name: data
+              mountPath: "/var/lib/postgresql/data"
+            - name: init-data
+              mountPath: "/docker-entrypoint-initdb.d"
+      volumes:
+        - name: init-data
+          configMap:
+            name: sql-init
+            defaultMode: 0755
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: fast-disks
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 10Gi
+---
+# Source: End-2-End-Testing/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-e2e
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: nginx-e2e
+    meta.helm.sh/release-namespace: "testing"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+    external-dns.alpha.kubernetes.io/hostname: hudson-viles.uk
+    external-dns.alpha.kubernetes.io/target: hudson-viles.uk
+  labels:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: test.hudson-viles.uk
+      http:
+        paths:
+          - backend:
+              service:
+                name: nginx-e2e
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+      - test.hudson-viles.uk
+      secretName: test-secret
+---
+# Source: End-2-End-Testing/templates/nginx-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nginx-e2e
+  namespace: testing
+  annotations:
+    meta.helm.sh/release-name: nginx-e2e
+    meta.helm.sh/release-namespace: "testing"
+  labels:
+    app: nginx-e2e
+    app.kubernetes.io/instance: nginx-e2e
+    app.kubernetes.io/name: nginx-e2e
+    helm.sh/chart: End-2-End-Testing-0.0.5
+    app.kubernetes.io/version: "0.0.5"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  endpoints:
+    - interval: 1m
+      path: /metrics
+      port: http-metrics
+  jobLabel: nginx-e2e
+  namespaceSelector:
+    matchNames:
+      - testing
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: nginx-e2e
+      app.kubernetes.io/name: nginx-e2e

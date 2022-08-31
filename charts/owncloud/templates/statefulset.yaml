@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{.Values.nameOverride}}
+  labels:
+  {{- include "postgresql.labels" . | nindent 4 }}
+  annotations:
+  {{- include "postgresql.annotations" . | nindent 4 }}
+spec:
+  {{- if .Values.statefulset.replicas }}
+  replicas: {{ .Values.statefulset.replicas }}
+  {{- end }}
+  serviceName: {{.Values.nameOverride}}
+  selector:
+    matchLabels:
+      name: {{.Values.nameOverride}}
+  template:
+    metadata:
+      labels:
+        name: {{.Values.nameOverride}}
+    spec:
+      {{- with .Values.statefulset.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{.Values.serviceAccountName}}
+      containers:
+        - name: {{.Values.nameOverride}}
+          image: {{.Values.image.repo}}:{{.Values.image.tag}}
+          imagePullPolicy: {{.Values.statefulset.imagePullPolicy}}
+          {{- with .Values.statefulset.resources }}
+          resources:
+          {{- toYaml .Values.statefulset.resources | nindent 12 }}
+          {{- end}}
+          env:
+{{- if .Values.postgres.env.postgresPassword }}
+          - name: POSTGRES_PASSWORD
+            value: {{.Values.postgres.env.postgresPassword}}
+{{- end }}
+{{- if .Values.postgres.env.postgresUser }}
+          - name: POSTGRES_USER
+            value: {{.Values.postgres.env.postgresUser}}
+{{- end }}
+{{- if .Values.postgres.env.postgresDB }}
+          - name: POSTGRES_DB
+            value: {{.Values.postgres.env.postgresDB}}
+{{- end }}
+{{- if .Values.postgres.env.postgresInitDBArgs }}
+          - name: POSTGRES_INITDB_ARGS
+            value: {{.Values.postgres.env.postgresInitDBArgs}}
+{{- end }}
+{{- if .Values.postgres.env.postgresInitDBWalDir }}
+          - name: POSTGRES_INITDB_WALDIR
+            value: {{.Values.postgres.env.postgresInitDBWalDir}}
+{{- end }}
+{{- if .Values.postgres.env.hostAuthMethod}}
+          - name: POSTGRES_HOST_AUTH_METHOD
+            value: {{.Values.postgres.env.hostAuthMethod}}
+{{- end }}
+{{- if .Values.postgres.env.pgData}}
+          - name: PGDATA
+            value: {{.Values.postgres.env.pgData}}
+{{- end }}
+          ports:
+            - containerPort: 5432
+              name: sql
+          volumeMounts:
+            - name: data
+              {{- if .Values.postgres.env.pgData}}
+              mountPath: {{.Values.postgres.env.pgData}}
+              {{- else}}
+              mountPath: "/var/lib/postgresql/data"
+              {{- end}}
+            {{- with .Values.statefulset.nodeSelector }}
+          nodeSelector:
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
+          {{- with .Values.statefulset.affinity }}
+          affinity:
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
+          {{- with .Values.statefulset.tolerations }}
+          tolerations:
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
+      {{- if (eq false .Values.postgres.peristentData.enabled)}}
+      volumes:
+        - name: data
+          emptyDir: {}
+      {{- end }}
+{{- if (eq true .Values.postgres.peristentData.enabled)}}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: {{.Values.postgres.storage.className}}
+        resources:
+          requests:
+            storage: {{.Values.postgres.storage.size}}
+{{- end }}
+---
