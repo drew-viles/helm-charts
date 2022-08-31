@@ -1,11 +1,11 @@
 name: Lint and Test Charts
 
 on:
-  push:
-    branches:
-      - 'releases/**'
-    paths:
-      - 'charts/**'
+#  push:
+#    branches:
+#      - 'releases/**'
+#    paths:
+#      - 'charts/**'
   pull_request:
   workflow_dispatch:
 
@@ -17,21 +17,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
 
       - name: Install Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v3
         with:
-          version: 3.4.0
+          version: 3.3.0
 
-      - uses: actions/setup-python@v2.2.1
+      - uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.9
 
       - name: Install chart-testing
-        uses: helm/chart-testing-action@v2.0.1
+        uses: helm/chart-testing-action@v2.3.0
 
       - name: Run lint
         run: ct lint --all --config .github/ct.yaml
@@ -41,7 +41,7 @@ jobs:
     needs: lint-chart
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3.0.2
 
       - name: Run helm-docs
         run: .github/helm-docs.sh
@@ -55,14 +55,13 @@ jobs:
       matrix:
         k8s:
           # from https://github.com/yannh/kubernetes-json-schema
-          - v1.18.9
-          - v1.19.9
-          - v1.20.9
-          - v1.21.6
-          - v1.22.3
+          - v1.22.9
+          - v1.23.9
+          - v1.24.4
+          - v1.25.0
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3.0.2
         with:
           fetch-depth: 0
 
@@ -70,52 +69,3 @@ jobs:
         env:
           KUBERNETES_VERSION: ${{ matrix.k8s }}
         run: .github/kubeconform.sh
-
-# Disabling while I work out the local-storage-provisioner - builds and lint should be sufficient
-#  install-chart:
-#    name: install-chart
-#    runs-on: ubuntu-latest
-#    needs:
-#      - lint-chart
-#      - lint-docs
-#      - kubeconform-chart
-#    strategy:
-#      matrix:
-#        k8s:
-#          # from https://hub.docker.com/r/kindest/node/tags
-#          - v1.18.19
-#          - v1.19.11
-#          - v1.20.7
-#          - v1.21.2
-#          - v1.22.2
-#    steps:
-#      #Broken so rolling my own
-#      - name: Checkout
-#        uses: actions/checkout@v2.3.4
-#        with:
-#          fetch-depth: 0
-#
-#      - uses: actions/setup-python@v2
-#        with:
-#          python-version: 3.7
-#
-#      - name: Create kind ${{ matrix.k8s }} cluster
-#        uses: helm/kind-action@v1.2.0
-#        with:
-#          node_image: kindest/node:${{ matrix.k8s }}
-#          log_level: 1
-#
-#      - name: Install chart-testing
-#        uses: helm/chart-testing-action@v2.1.0
-#        with:
-#          version: v3.4.0
-#        continue-on-error: true
-#
-#      - name: Add required CRDs
-#        env:
-#          KUBECTL_VERSION: ${{ matrix.k8s }}
-#        run: .github/required-crds.sh
-#
-#      - name: Run chart install
-#        run: ct install --all --config .github/ct.yaml
-#        continue-on-error: true
