@@ -43,7 +43,7 @@ spec:
                       values:
                         - web-frontend
                 topologyKey: topology.kubernetes.io/zone
-      serviceAccountName: {{.Values.postgres.serviceAccountName}}
+      serviceAccountName: postgresql-sa
       initContainers:
         - name: postgres-clean
           image: busybox:latest

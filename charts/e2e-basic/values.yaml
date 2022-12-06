@@ -3,12 +3,9 @@
 
 nginx:
   image:
-    # -- The repo to be used
     repo: nginx
-    # -- The tag to be used
-    tag: 1.23.1-alpine
-  serviceAccountName: "nginx"
-  resources: {}
+    tag: 1.23.2-alpine
+  resources: { }
   # requests:
   #   memory: "500Mi"
   #   cpu: "500m"
@@ -16,27 +13,10 @@ nginx:
   #   memory: "1Gi"
   #   cpu: "1000m"
 
-ingress:
-  enabled: true
-  annotations: {}
-  # cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  # external-dns.alpha.kubernetes.io/target: "example.uk"
-  # external-dns.alpha.kubernetes.io/hostname: "example.uk"
-  # external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
-  className: nginx
-  host: test.example.uk
-  tls:
-    - hosts:
-        - test.example.uk
-      secretName: test-secret
-
 postgres:
   image:
-    # -- The repo to be used
     repo: postgres
-    # -- The tag to be used
-    tag: 14.5-alpine
-  serviceAccountName: postgresql
+    tag: 15.1-alpine
   statefulset:
     persistentData:
       enabled: true
@@ -47,8 +27,27 @@ postgres:
       postgresUser: "e2e-user"
       postgresDB: "e2e-user"
 
+ingress:
+  enabled: true
+  annotations: { }
+  # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  # external-dns.alpha.kubernetes.io/target: "example.uk"
+  # external-dns.alpha.kubernetes.io/hostname: "example.uk"
+  # external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+  className: nginx
+  host: test.example.uk
+  tls: []
+  #  - hosts:
+  #      - test.example.uk
+  #    secretName: test-secret
+
+# Deploys a ServiceMonitor and dashboards to grafana for validation of Prometheus/monitoring.
 monitoring:
   grafana:
-    dashboards: true
+    dashboards: false
   serviceMonitor:
-    enabled: true
+    enabled: false
+
+gpu:
+  # Enable to deploy a workload for GPU testing.
+  enabled: false

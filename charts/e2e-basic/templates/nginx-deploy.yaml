@@ -50,7 +50,7 @@ spec:
                 topologyKey: topology.kubernetes.io/zone
       dnsPolicy: ClusterFirst
       restartPolicy: Always
-      serviceAccountName: {{ .Values.nginx.serviceAccountName }}
+      serviceAccountName: nginx-sa
       containers:
         - name: nginx
           image: {{.Values.nginx.image.repo}}:{{.Values.nginx.image.tag}}
