@@ -2,7 +2,7 @@
 
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: Pod
 metadata:
   namespace: {{ .Release.Namespace }}
   name: gpu-test
@@ -15,20 +15,10 @@ metadata:
     meta.helm.sh/release-name: gpu-test
     {{- include "e2e-testing.annotations" . | nindent 4 }}
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: gpu-test
-  template:
-    metadata:
-      labels:
-        app: gpu-test
-    spec:
-      serviceAccountName: gpu-sa
-      containers:
-        - name: cuda-vectoradd
-          image: "nvidia/samples:vectoradd-cuda11.2.1"
-          resources:
-            limits:
-              nvidia.com/gpu: "1"
+  containers:
+    - name: cuda-vectoradd
+      image: "nvidia/samples:vectoradd-cuda11.2.1"
+      resources:
+        limits:
+          nvidia.com/gpu: "1"
 {{- end }}
