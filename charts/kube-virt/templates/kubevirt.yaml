@@ -1,0 +1,19 @@
+---
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-install
+spec:
+  certificateRotateStrategy: { }
+  configuration:
+    developerConfiguration:
+      {{- if .Values.kubevirt.useSoftwareEmulation }}
+      useEmulation: {{ .Values.kubevirt.useSoftwareEmulation }}
+      {{- end }}
+      featureGates: [ ]
+  customizeComponents: { }
+  imagePullPolicy: IfNotPresent
+  workloadUpdateStrategy: { }

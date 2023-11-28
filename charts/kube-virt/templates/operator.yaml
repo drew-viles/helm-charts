@@ -1,0 +1,109 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    kubevirt.io: {{ include "kube-virt.fullname" . }}
+    {{- include "kube-virt.labels" . | nindent 4 }}
+  name: {{ include "kube-virt.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      kubevirt.io: {{ include "kube-virt.fullname" . }}
+      {{- include "kube-virt.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        kubevirt.io: {{ include "kube-virt.fullname" . }}
+        name: {{ include "kube-virt.fullname" . }}
+        prometheus.kubevirt.io: "true"
+        {{- include "kube-virt.selectorLabels" . | nindent 8 }}
+      name: {{ include "kube-virt.fullname" . }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: kubevirt.io
+                      operator: In
+                      values:
+                        - {{ include "kube-virt.fullname" . }}
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+      containers:
+        - args:
+            - --port
+            - "8443"
+            - -v
+            - "2"
+          command:
+            - virt-operator
+          env:
+            - name: VIRT_OPERATOR_IMAGE
+              value: quay.io/kubevirt/virt-operator:v{{.Values.kubevirt.version}}
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['olm.targetNamespaces']
+            - name: KUBEVIRT_VERSION
+              value: v{{ .Values.kubevirt.version}}
+          image: "{{ .Values.image.repository }}:v{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: IfNotPresent
+          name: virt-operator
+          ports:
+            - containerPort: 8443
+              name: metrics
+              protocol: TCP
+            - containerPort: 8444
+              name: webhooks
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 8443
+              scheme: HTTPS
+            initialDelaySeconds: 5
+            timeoutSeconds: 10
+          resources:
+            requests:
+              cpu: 10m
+              memory: 450Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - mountPath: /etc/virt-operator/certificates
+              name: kubevirt-operator-certs
+              readOnly: true
+            - mountPath: /profile-data
+              name: profile-data
+      nodeSelector:
+        kubernetes.io/os: linux
+      priorityClassName: kubevirt-cluster-critical
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccountName: kubevirt-operator
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+      volumes:
+        - name: kubevirt-operator-certs
+          secret:
+            optional: true
+            secretName: kubevirt-operator-certs
+        - emptyDir: { }
+          name: profile-data
