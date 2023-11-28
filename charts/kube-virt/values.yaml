@@ -1,0 +1,21 @@
+kubevirt:
+  version: 1.1.0
+  useSoftwareEmulation: false
+
+replicaCount: 2
+
+image:
+  repository: quay.io/kubevirt/virt-operator
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+nameOverride: ""
+fullnameOverride: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
