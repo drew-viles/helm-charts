@@ -1,0 +1,4 @@
+targetNode: ""
+hostPath: "/storage"
+sambaUser: ""
+sambaCredentialsSecret: "samba-credentials"
