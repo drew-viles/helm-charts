@@ -489,6 +489,28 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/provisioner-2.5.1/provisioner-2.5.1.tgz
     version: 2.5.1
+  samba:
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2023-11-29T21:50:35.812536511Z"
+    description: 'Samba Helm chart requires a LoadBalancer service to function. It
+      creates a /shared path that can be accessed using a supplied username and password.
+      The password should be stored in a secret and the username supplied via the
+      values. It is currently not configurable too much but could be in future. '
+    digest: bdbd7cdd241e0867048d2de955e9140e6d787d2978e5e09bd239f0f5d6c5e29a
+    keywords:
+    - samba
+    - newtork_share
+    maintainers:
+    - email: drew@hudson-viles.uk
+      name: Drew
+    name: samba
+    sources:
+    - https://drew-viles.github.io/helm-charts/samba
+    type: application
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/samba-0.1.0/samba-0.1.0.tgz
+    version: 0.1.0
   virt-operator:
   - apiVersion: v2
     appVersion: 1.1.0
@@ -518,4 +540,4 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/virt-operator-0.1.0/virt-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-28T23:20:42.804817038Z"
+generated: "2023-11-29T21:50:35.812598117Z"
