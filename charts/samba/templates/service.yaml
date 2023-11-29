@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "samba.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "samba.labels" . | nindent 4 }}
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 139
+      protocol: TCP
+      name: session-service
+    - port: 445
+      protocol: TCP
+      name: smb
+  selector:
+    {{- include "samba.selectorLabels" . | nindent 4 }}
