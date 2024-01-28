@@ -336,6 +336,24 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/istio-operator-0.1.0/istio-operator-0.1.0.tgz
     version: 0.1.0
+  jellyfin:
+  - apiVersion: v2
+    appVersion: 10.18.3
+    created: "2024-01-28T23:43:06.191914445Z"
+    description: A Helm chart for Kubernetes
+    digest: 0fbd29f0ff3bd53c3ca2c3ac9230a627c1ff30fc58b0c6b49623b6db1beb2240
+    keywords:
+    - mediaserver
+    - jellyfin
+    - media
+    maintainers:
+    - email: drew@hudson-viles.uk
+      name: Drew
+    name: jellyfin
+    type: application
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/jellyfin-0.1.0/jellyfin-0.1.0.tgz
+    version: 0.1.0
   postgresql:
   - apiVersion: v1
     appVersion: 14.1.0
@@ -540,4 +558,4 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/virt-operator-0.1.0/virt-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2023-11-29T21:50:35.812598117Z"
+generated: "2024-01-28T23:43:06.389737289Z"
