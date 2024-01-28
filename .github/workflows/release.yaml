@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - 'charts/**'
-  workflow_dispatch:
 
 jobs:
   release:

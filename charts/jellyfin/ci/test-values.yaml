@@ -1,0 +1,12 @@
+storageClassName: "longhorn"
+
+data:
+  hostPath:
+    enabled: true
+    mediaPath: "/data"
+  persistentData:
+    enabled: false
+    existingName: ""
+
+config:
+  url: https://config.example.com
