@@ -1,6 +1,7 @@
-# virt-operator
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.2.0](https://img.shields.io/badge/AppVersion-1.2.0-informational?style=flat-square)
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
 
 KubeVirt technology addresses the needs of development teams that have adopted or want to adopt Kubernetes but
 possess existing Virtual Machine-based workloads that cannot be easily containerized. More specifically,
@@ -23,13 +24,13 @@ helm repo update
 Using config from a file:
 
 ```bash
-helm upgrade --install virt-operator . --values ./values.yaml
+helm upgrade --install {{ template "chart.name" . }} . --values ./values.yaml
 ```
 
 ## Updating the Chart
 Make sure you've run and resolved any issues using the following as failures of these will cause the pipeline/actions to fail.
 ```
-ct lint charts/virt-operator/values.yaml --validate-maintainers=false --config .github/ct.yaml
+ct lint charts/{{ template "chart.name" . }}/values.yaml --validate-maintainers=false --config .github/ct.yaml
 
 helm-docs .
 ```
@@ -38,19 +39,4 @@ helm-docs .
 
 The following table lists the configurable parameters of the chart and the default values.
 
-## Values
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| autoscaling.enabled | bool | `false` |  |
-| autoscaling.maxReplicas | int | `100` |  |
-| autoscaling.minReplicas | int | `1` |  |
-| autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| fullnameOverride | string | `""` |  |
-| image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"quay.io/kubevirt/virt-operator"` |  |
-| image.tag | string | `""` |  |
-| kubevirt.useSoftwareEmulation | bool | `false` |  |
-| kubevirt.version | string | `"1.2.0"` |  |
-| nameOverride | string | `""` |  |
-| replicaCount | int | `2` |  |
+{{ template "chart.valuesSection" . }}

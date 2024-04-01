@@ -1,10 +1,6 @@
 apiVersion: v2
 name: samba
-description: |
-  Samba Helm chart requires a LoadBalancer service to function.
-  It creates a /shared path that can be accessed using a supplied username and password.
-  The password should be stored in a secret and the username supplied via the values.
-  It is currently not configurable too much but could be in future.
+description: Deploys Samba onto Kubernetes
 type: application
 version: 0.1.0
 appVersion: "1.1.0"
