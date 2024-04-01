@@ -1,0 +1,37 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+Samba Helm chart requires a LoadBalancer service to function.
+It creates a /shared path that can be accessed using a supplied username and password.
+The password should be stored in a secret and the username supplied via the values.
+
+## Add Helm Repository
+
+```shell
+helm repo add drew-viles https://drew-viles.github.io/helm-charts
+helm repo update
+```
+
+## Install Chart
+
+Using config from a file:
+
+```bash
+helm upgrade --install {{ template "chart.name" . }} . --values ./values.yaml
+```
+
+## Updating the Chart
+Make sure you've run and resolved any issues using the following as failures of these will cause the pipeline/actions to fail.
+```
+ct lint charts/{{ template "chart.name" . }}/values.yaml --validate-maintainers=false --config .github/ct.yaml
+
+helm-docs .
+```
+
+## Configuration
+
+The following table lists the configurable parameters of the chart and the default values.
+
+{{ template "chart.valuesSection" . }}
