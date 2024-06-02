@@ -87,7 +87,7 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 2Gi
+            storage: {{ .Values.data.configSize }}
       metadata:
         name: config
     - spec:
@@ -96,6 +96,6 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 2Gi
+            storage: {{ .Values.data.cacheSize }}
       metadata:
         name: cache
