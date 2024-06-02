@@ -41,8 +41,8 @@ The following table lists the configurable parameters of the chart and the defau
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | config.url | string | `"https://config.example.com"` |  |
-| data.cacheSize | string | `nil` |  |
-| data.configSize | string | `nil` |  |
+| data.cacheSize | string | `"2Gi"` |  |
+| data.configSize | string | `"1Gi"` |  |
 | data.hostPath.enabled | bool | `true` |  |
 | data.hostPath.mediaPath | string | `"/data"` |  |
 | data.persistentData.enabled | bool | `false` |  |

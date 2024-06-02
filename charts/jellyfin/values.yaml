@@ -90,8 +90,8 @@ data:
   persistentData:
     enabled: false
     existingName: ""
-  configSize:
-  cacheSize:
+  configSize: "1Gi"
+  cacheSize: "2Gi"
 
 config:
   url: https://config.example.com
