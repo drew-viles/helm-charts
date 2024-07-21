@@ -382,6 +382,23 @@ entries:
     version: 0.1.0
   jellyfin:
   - apiVersion: v2
+    appVersion: 10.9.8
+    created: "2024-07-21T12:40:43.190468753Z"
+    description: Deploys Jellyfin onto Kubernetes
+    digest: f64a00017c00106263dd3922fdd6e9563082c381d6319cc779f3e46e70c1cc5d
+    keywords:
+    - mediaserver
+    - jellyfin
+    - media
+    maintainers:
+    - email: drew@hudson-viles.uk
+      name: Drew
+    name: jellyfin
+    type: application
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/jellyfin-0.1.3/jellyfin-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
     appVersion: 10.9.4
     created: "2024-06-02T21:11:30.008292937Z"
     description: Deploys Jellyfin onto Kubernetes
@@ -570,6 +587,24 @@ entries:
     version: 2.5.1
   samba:
   - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2024-07-21T12:40:43.310725957Z"
+    description: Deploys Samba onto Kubernetes
+    digest: ffcec24e287ab5224519987a1c2d7435c3a4718850920dd6fb9124c54aced18b
+    keywords:
+    - samba
+    - newtork_share
+    maintainers:
+    - email: drew@hudson-viles.uk
+      name: Drew
+    name: samba
+    sources:
+    - https://drew-viles.github.io/helm-charts/samba
+    type: application
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/samba-0.1.1/samba-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 1.1.0
     created: "2023-11-29T21:50:35.812536511Z"
     description: 'Samba Helm chart requires a LoadBalancer service to function. It
@@ -637,4 +672,4 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/virt-operator-0.1.0/virt-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-02T21:11:30.008366614Z"
+generated: "2024-07-21T12:40:43.310787663Z"
