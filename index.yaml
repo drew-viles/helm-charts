@@ -383,6 +383,23 @@ entries:
   jellyfin:
   - apiVersion: v2
     appVersion: 10.9.8
+    created: "2024-07-21T12:53:19.901203443Z"
+    description: Deploys Jellyfin onto Kubernetes
+    digest: 310d8c211eb7c732d402e5748aabeb0148dbdc1610aa0b1a58caf87aa5f42050
+    keywords:
+    - mediaserver
+    - jellyfin
+    - media
+    maintainers:
+    - email: drew@hudson-viles.uk
+      name: Drew
+    name: jellyfin
+    type: application
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/jellyfin-0.1.4/jellyfin-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 10.9.8
     created: "2024-07-21T12:40:43.190468753Z"
     description: Deploys Jellyfin onto Kubernetes
     digest: f64a00017c00106263dd3922fdd6e9563082c381d6319cc779f3e46e70c1cc5d
@@ -672,4 +689,4 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/virt-operator-0.1.0/virt-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-21T12:40:43.310787663Z"
+generated: "2024-07-21T12:53:19.901264156Z"
