@@ -39,7 +39,7 @@ spec:
               value: {{ .Values.config.url }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: 8096
               protocol: TCP
           livenessProbe:
             httpGet:
