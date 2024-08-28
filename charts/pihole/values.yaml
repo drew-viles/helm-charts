@@ -103,5 +103,4 @@ pihole:
   timezone: "Europe/London"
   hostName: ~  # Set this to the same as your ingress
   enableDNSSec: "true"
-  ftlConfLocalIPV4: ""
   dns: "1.1.1.1;8.8.4.4"

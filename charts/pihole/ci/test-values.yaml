@@ -18,3 +18,11 @@ dhcpService:
   type: LoadBalancer
   port: 69
   annotations: {}
+
+pihole:
+  adminPassword:
+    existingSecret: "pihole-credentials"  # Must contain the key "password"
+  timezone: "Europe/London"
+  hostName: ~  # Set this to the same as your ingress
+  enableDNSSec: "true"
+  dns: "1.1.1.1;8.8.4.4"

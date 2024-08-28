@@ -64,7 +64,6 @@ The following table lists the configurable parameters of the chart and the defau
 | pihole.adminPassword.existingSecret | string | `"pihole-credentials"` |  |
 | pihole.dns | string | `"1.1.1.1;8.8.4.4"` |  |
 | pihole.enableDNSSec | string | `"true"` |  |
-| pihole.ftlConfLocalIPV4 | string | `""` |  |
 | pihole.hostName | string | `nil` |  |
 | pihole.timezone | string | `"Europe/London"` |  |
 | podAnnotations | object | `{}` |  |
