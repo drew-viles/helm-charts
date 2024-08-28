@@ -1,6 +1,6 @@
 # pihole
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2024.07.0](https://img.shields.io/badge/AppVersion-2024.07.0-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2024.07.0](https://img.shields.io/badge/AppVersion-2024.07.0-informational?style=flat-square)
 
 The pihole helm chart simply exists for deploying the pihole media server onto Kubernetes.
 
@@ -54,9 +54,7 @@ The following table lists the configurable parameters of the chart and the defau
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `nil` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.hosts[0].host | string | `"chart-example.local"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.hosts[0].paths[0].pathType | string | `"Prefix"` |  |
+| ingress.host | string | `"chart-example.local"` |  |
 | ingress.tls | list | `[]` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
@@ -73,7 +71,7 @@ The following table lists the configurable parameters of the chart and the defau
 | replicaCount | int | `1` |  |
 | resources | object | `{}` |  |
 | securityContext.capabilities.add[0] | string | `"NET_ADMIN"` |  |
-| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.capabilities.drop | list | `[]` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
