@@ -1,0 +1,28 @@
+persistentVolume:
+  etc:
+    size: 1Gi
+  dns:
+    size: 1Gi
+  storageClassName: "longhorn"
+
+
+webService:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+dnsService:
+  type: LoadBalancer
+  port: 53
+  annotations: {}
+dhcpService:
+  type: LoadBalancer
+  port: 69
+  annotations: {}
+
+pihole:
+  adminPassword:
+    existingSecret: "pihole-credentials"  # Must contain the key "password"
+  timezone: "Europe/London"
+  hostName: ~  # Set this to the same as your ingress
+  enableDNSSec: "true"
+  dns: "1.1.1.1;8.8.4.4"

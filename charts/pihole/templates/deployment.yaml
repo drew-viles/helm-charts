@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "pihhole.fullname" . }}
+  labels:
+    {{- include "pihhole.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "pihhole.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "pihhole.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "pihhole.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: TZ
+              value: "{{ .Values.pihole.timezone }}"
+            - name: VIRTUAL_HOST
+              value: "pi.hole"
+            - name: DNSSEC
+              value: "{{ .Values.pihole.enableDNSSec }}"
+            - name: DNSMASQ_LISTENING
+              value: all
+            #- name: FTLCONF_RATE_LIMIT
+            #  value: 0/0
+            #- name: FTLCONF_LOCAL_IPV4
+            #  value: {{ .Values.pihole.ftlConfLocalIPV4 }}
+            - name: PIHOLE_DNS_
+              value: "{{ .Values.pihole.dns }}"
+            - name: WEB_PORT
+              value: "{{ .Values.webService.port }}"
+            #- name: FTLCONF_MAXDBDAYS
+            #  value: '90'
+            #- name: REV_SERVER
+            #  value: 'true'
+            #- name: REV_SERVER_DOMAIN
+            #  value: local.lan
+            #- name: REV_SERVER_TARGET
+            #  value: 172.16.0.1
+            #- name: REV_SERVER_CIDR
+            #  value: 172.16.0.0/12
+            - name: WEBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.pihole.adminPassword.existingSecret }}
+                  key: password
+          ports:
+            - name: dns-tcp
+              containerPort: 53
+              protocol: TCP
+            - name: dns-udp
+              containerPort: 53
+              protocol: UDP
+            - name: dhcp-udp
+              containerPort: 67
+              protocol: UDP
+            - name: http
+              containerPort: {{ .Values.webService.port }}
+              protocol: TCP
+          readinessProbe:
+            exec:
+              command: ['dig', '@127.0.0.1', 'cloudflare.com']
+            timeoutSeconds: 20
+            initialDelaySeconds: 5
+            periodSeconds: 60
+          livenessProbe:
+            tcpSocket:
+              port: dns-tcp
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: pihole-etc
+              mountPath: /etc/pihole
+            - name: pihole-dnsm
+              mountPath: /etc/dnsmasq.d
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: pihole-etc
+          persistentVolumeClaim:
+            claimName: {{ include "pihhole.fullname" . }}-etc
+        - name: pihole-dnsm
+          persistentVolumeClaim:
+            claimName: {{ include "pihhole.fullname" . }}-dnsm
