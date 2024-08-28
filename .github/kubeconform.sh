@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # renovate: datasource=github-releases depName=yannh/kubeconform
-KUBECONFORM_VERSION=0.6.4
+KUBECONFORM_VERSION=0.6.7
 
 #CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- apps | cut -d '/' -f 2 | uniq)"
 CHART_DIRS=$(ls charts)
