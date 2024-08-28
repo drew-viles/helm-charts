@@ -1,0 +1,30 @@
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "pihhole.fullname" . }}-etc
+  labels:
+    {{- include "pihhole.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolume.etc.size }}
+  storageClassName: {{ .Values.persistentVolume.storageClassName }}
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "pihhole.fullname" . }}-dnsm
+  labels:
+    {{- include "pihhole.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolume.dns.size }}
+  storageClassName: {{ .Values.persistentVolume.storageClassName }}
