@@ -449,7 +449,6 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/jellyfin-0.1.0/jellyfin-0.1.0.tgz
     version: 0.1.0
-
   postgresql:
   - apiVersion: v1
     appVersion: 14.1.0
@@ -690,4 +689,4 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/virt-operator-0.1.0/virt-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-28T19:10:41.725432103Z"
+generated: "2024-08-28T19:19:08.511754902Z"
