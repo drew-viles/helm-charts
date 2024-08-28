@@ -54,9 +54,7 @@ The following table lists the configurable parameters of the chart and the defau
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `nil` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.hosts[0].host | string | `"chart-example.local"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.hosts[0].paths[0].pathType | string | `"Prefix"` |  |
+| ingress.host | string | `"chart-example.local"` |  |
 | ingress.tls | list | `[]` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
