@@ -452,6 +452,22 @@ entries:
   pihole:
   - apiVersion: v2
     appVersion: 2024.07.0
+    created: "2024-08-28T20:58:40.944251286Z"
+    description: Deploys pihole onto Kubernetes
+    digest: c7fe9e41caea59028f1826798ae9b11a539ebcd4144c97ae9e121c63de711b0b
+    keywords:
+    - pihole
+    - dns
+    maintainers:
+    - email: drew@hudson-viles.uk
+      name: Drew
+    name: pihole
+    type: application
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/pihole-0.1.2/pihole-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 2024.07.0
     created: "2024-08-28T20:48:56.066231734Z"
     description: Deploys pihole onto Kubernetes
     digest: d8f3815083fa98f0814f11689efcef1ac7856c138ca81e04dfc6002025da57e1
@@ -722,4 +738,4 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/virt-operator-0.1.0/virt-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-28T20:48:56.066299029Z"
+generated: "2024-08-28T20:58:40.944320305Z"
