@@ -1,12 +1,12 @@
 apiVersion: v2
-name: pihhole
-description: Deploys pihhole onto Kubernetes
+name: pihole
+description: Deploys pihole onto Kubernetes
 type: application
-version: 0.1.1
+version: 0.1.0
 appVersion: "2024.07.0"
 maintainers:
   - name: Drew
     email: drew@hudson-viles.uk
 keywords:
-  - pihhole
+  - pihole
   - dns

@@ -3,9 +3,9 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "pihhole.fullname" . }}-etc
+  name: {{ include "pihole.fullname" . }}-etc
   labels:
-    {{- include "pihhole.labels" . | nindent 4 }}
+    {{- include "pihole.labels" . | nindent 4 }}
 spec:
   accessModes:
     - ReadWriteMany
@@ -18,9 +18,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "pihhole.fullname" . }}-dnsm
+  name: {{ include "pihole.fullname" . }}-dnsm
   labels:
-    {{- include "pihhole.labels" . | nindent 4 }}
+    {{- include "pihole.labels" . | nindent 4 }}
 spec:
   accessModes:
     - ReadWriteMany
