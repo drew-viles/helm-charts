@@ -449,6 +449,23 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/jellyfin-0.1.0/jellyfin-0.1.0.tgz
     version: 0.1.0
+  pihole:
+  - apiVersion: v2
+    appVersion: 2024.07.0
+    created: "2024-08-28T19:10:41.725334471Z"
+    description: Deploys pihole onto Kubernetes
+    digest: e671a771a3b432d975a638a7ac0958f531e9377268b8a582a79cc2d4ad0c97b1
+    keywords:
+    - pihole
+    - dns
+    maintainers:
+    - email: drew@hudson-viles.uk
+      name: Drew
+    name: pihole
+    type: application
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/pihole-0.1.0/pihole-0.1.0.tgz
+    version: 0.1.0
   postgresql:
   - apiVersion: v1
     appVersion: 14.1.0
@@ -689,4 +706,4 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/virt-operator-0.1.0/virt-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-28T18:58:38.485703703Z"
+generated: "2024-08-28T19:10:41.725432103Z"
