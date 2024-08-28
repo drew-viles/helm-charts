@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "pihhole.fullname" . }}-udp
+  name: {{ include "pihhole.fullname" . }}-dns-udp
   labels:
     {{- include "pihhole.labels" . | nindent 4 }}
   {{- with .Values.dnsService.annotations }}
@@ -11,11 +11,34 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.dnsService.type }}
+  loadBalancerIP: {{ .Values.dnsService.loadBalancerIP }}
   ports:
     - port: 53
       targetPort: 53
       protocol: UDP
       name: dns-udp
+    - port: 67
+      targetPort: 67
+      protocol: UDP
+      name: dns-udp
+  selector:
+    {{- include "pihhole.selectorLabels" . | nindent 4 }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "pihhole.fullname" . }}-dhcp-udp
+  labels:
+    {{- include "pihhole.labels" . | nindent 4 }}
+  {{- with .Values.dnsService.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.dnsService.type }}
+  loadBalancerIP: {{ .Values.dhcpService.loadBalancerIP }}
+  ports:
     - port: 67
       targetPort: 67
       protocol: UDP
@@ -36,6 +59,7 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.dnsService.type }}
+  loadBalancerIP: {{ .Values.dnsService.loadBalancerIP }}
   ports:
     - port: 53
       targetPort: 53

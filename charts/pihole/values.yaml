@@ -44,9 +44,11 @@ webService:
   annotations: {}
 dnsService:
   type: LoadBalancer
+  loadBalancerIP: ~
   annotations: {}
 dhcpService:
   type: LoadBalancer
+  loadBalancerIP: ~
   annotations: {}
 
 ingress:
