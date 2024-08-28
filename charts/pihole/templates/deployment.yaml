@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "pihhole.fullname" . }}
+  name: {{ include "pihole.fullname" . }}
   labels:
-    {{- include "pihhole.labels" . | nindent 4 }}
+    {{- include "pihole.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -12,7 +12,7 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      {{- include "pihhole.selectorLabels" . | nindent 6 }}
+      {{- include "pihole.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -20,13 +20,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "pihhole.selectorLabels" . | nindent 8 }}
+        {{- include "pihole.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "pihhole.serviceAccountName" . }}
+      serviceAccountName: {{ include "pihole.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -113,7 +113,7 @@ spec:
       volumes:
         - name: pihole-etc
           persistentVolumeClaim:
-            claimName: {{ include "pihhole.fullname" . }}-etc
+            claimName: {{ include "pihole.fullname" . }}-etc
         - name: pihole-dnsm
           persistentVolumeClaim:
-            claimName: {{ include "pihhole.fullname" . }}-dnsm
+            claimName: {{ include "pihole.fullname" . }}-dnsm
