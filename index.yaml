@@ -452,6 +452,22 @@ entries:
   pihhole:
   - apiVersion: v2
     appVersion: 2024.07.0
+    created: "2024-08-28T18:58:38.485634364Z"
+    description: Deploys pihhole onto Kubernetes
+    digest: fbcc4ad7f4ea50594915144d99525639f0844a4f0f277955d5f284a685cc5145
+    keywords:
+    - pihhole
+    - dns
+    maintainers:
+    - email: drew@hudson-viles.uk
+      name: Drew
+    name: pihhole
+    type: application
+    urls:
+    - https://github.com/drew-viles/helm-charts/releases/download/pihhole-0.1.1/pihhole-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 2024.07.0
     created: "2024-08-28T15:02:14.547277552Z"
     description: Deploys pihhole onto Kubernetes
     digest: a22d37bac511f81094de5dc878c65bd05761731647c484626ecb7feaa584f596
@@ -706,4 +722,4 @@ entries:
     urls:
     - https://github.com/drew-viles/helm-charts/releases/download/virt-operator-0.1.0/virt-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-28T15:02:14.547359565Z"
+generated: "2024-08-28T18:58:38.485703703Z"
