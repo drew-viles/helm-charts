@@ -17,10 +17,6 @@ spec:
       targetPort: 53
       protocol: UDP
       name: dns-udp
-    - port: 67
-      targetPort: 67
-      protocol: UDP
-      name: dns-udp
   selector:
     {{- include "pihole.selectorLabels" . | nindent 4 }}
 
